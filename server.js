@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 const mongoURI = process.env.DB_URI || 'mongodb://localhost:27017/carpark';
 const db = mongoose.connection;
 const request = require('request');
+const Carparks = require('./models/carparks')
+const moment = require('moment');
 
 /////////////// Connect to mongoose /////////////
 mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
@@ -36,95 +38,161 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
 	res.send('Hello World Carpark backend');
 });
-/////////////////////////////////////////
-
-const proxyHelper = (url, req, res) => {
-	request(
-		{
-			url: url,
-			headers: {
-				'AccessKey': '3fe311cb-5e09-42cc-b91f-49469ced4d67',
-			},
-		},
-		(error, response, body) => {
-			if (error || response.statusCode !== 200) {
-				return res
-					.status(500)
-					.json({ type: 'error', message: error.message });
-			}
-			//JSON.parse() to convert body from JSON format to javaScript Object
-			res.send(JSON.parse(body).Result)
-		}
-	);
-}
-
-
-app.get('/carparkToken', (req, res) => {
-	proxyHelper('https://www.ura.gov.sg/uraDataService/insertNewToken.action', req, res)
-});
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const tokenController = require('./controllers/token');
 app.use('/token', tokenController);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-app.get('/carparkAvailability', (req, res) => {
-	request(
-		{
-			url:
-				'https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Availability',
-			headers: {
-				// 'Content-Type': 'application/json',
-				'AccessKey': '3fe311cb-5e09-42cc-b91f-49469ced4d67',
-				'Token':
-					'WdzpPsAe9bv9eg+ndDbgH99hjZvJVcs91e-ek1RAGy-N4-HUPr13Uja60ed1uzQu4nee3134rS9Ss91Tc4de049s7c3Tb389f1Tt',
-			},
-		},
-		(error, response, body) => {
-			if (error || response.statusCode !== 200) {
-				return res
-					.status(500)
-					.json({ type: 'error', message: error.message });
-			}
-			// res.json(body);
-			res.send(body)
-		}
-	);
-});
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-app.get('/carparkListDetails', (req, res) => {
-	request(
-		{
-			url:
-				'https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details',
-			headers: {
-				// 'Content-Type': 'application/json',
-				'AccessKey': '3fe311cb-5e09-42cc-b91f-49469ced4d67',
-				'Token':
-					'Me-s4-23B+pSbts2X4-HebB1-@4k9+2dUS99DKhEPuGfpt@BtED9e-6rgt7@4Q9edpc63-NbjnVs2D513y6497E9bnf49991DbF-',
-			},
-		},
-		(error, response, body) => {
-			if (error || response.statusCode !== 200) {
-				return res
-					.status(500)
-					.json({ type: 'error', message: error.message });
-			}
-			// res.json(body);
-			res.send(body)
-		}
-	);
-});
-
-
-
-
 const carparkController = require('./controllers/carpark');
 app.use('/carpark', carparkController);
+/////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.get('/CarparkDetails', (req, res) => {
+	Carparks.find({address: { $regex: req.query.area, $options: 'i' }}, (err, foundCarpark) => {
+		if (err) console.log(err);
+		if (foundCarpark) {
+			// console.log(foundCarpark);
+			res.json(foundCarpark);
+		}
+	});
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.get('/CarparkAvailability', (req, res) => {
+	request(
+		{
+			url:
+				'https://api.data.gov.sg/v1/transport/carpark-availability?date_time=' + moment().subtract(1, 'minutes').format('YYYY-MM-DDThh:mm:ss'),
+		},
+		(error, response, body) => {
+			if (error || response.statusCode !== 200) {
+				console.log(error)
+			}
+			// res.json(body);
+			res.send(body)
+			console.log(moment().subtract(1, 'minutes').format('YYYY-MM-DDThh:mm:ss'))
+		}
+	)
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 //////////////////////////////////////////////////
 app.listen(port, () => console.log('Listening at port', port + ' ' + mongoURI));
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// const proxyHelper = (url, req, res) => {
+// 	request(
+// 		{
+// 			url: url,
+// 			headers: {
+// 				'AccessKey': '3fe311cb-5e09-42cc-b91f-49469ced4d67',
+// 			},
+// 		},
+// 		(error, response, body) => {
+// 			if (error || response.statusCode !== 200) {
+// 				return res
+// 					.status(500)
+// 					.json({ type: 'error', message: error.message });
+// 			}
+// 			//JSON.parse() to convert body from JSON format to javaScript Object
+// 			res.send(JSON.parse(body))
+// 		}
+// 	);
+// }
+
+
+// app.get('/carparkToken', (req, res) => {
+// 	proxyHelper('https://www.ura.gov.sg/uraDataService/insertNewToken.action', req, res)
+// });
+
+
+// app.get('/seedCarparkDetails', (req, res) => {
+// 	request(
+// 		{
+// 			url:
+// 				'https://data.gov.sg/api/action/datastore_search?resource_id=139a3035-e624-4f56-b63f-89ae28d4ae4c&limit=2157',
+// 		},
+// 		(error, response, body) => {
+// 			if (error || response.statusCode !== 200) {
+// 				return res
+// 					.status(500)
+// 					.json({ type: 'error', message: error.message });
+// 			}
+// 			// res.json(body);
+			
+// 			console.log(typeof body)
+// 			console.log(JSON.parse(body).result.records)
+// 			const data = JSON.parse(body).result.records
+
+// 			data.forEach(element => {
+// 				delete element._id;
+// 				Carparks.create(element), (err, createdCarpark) => {
+// 					if(err) console.log(err);
+// 					if(createdCarpark) {
+// 						console.log('seed data is successful');
+// 					}
+// 				}
+// 			});
+
+
+			
+// 		}
+// 	);
+// });
+
+
+
+// app.get('/carparkListDetails', (req, res) => {
+// 	console.log(req.query.token)
+// 	const header = {
+// 		'AccessKey': '3fe311cb-5e09-42cc-b91f-49469ced4d67',
+// 		'Token': req.query.token
+// 	}
+// 	request(
+// 		{
+// 			url:
+// 				'https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details',
+// 			headers: header
+// 		},
+// 		(error, response, body) => {
+// 			if (error || response.statusCode !== 200) {
+// 				return res
+// 					.status(500)
+// 					.json({ type: 'error', message: error.message });
+// 			}
+// 			// res.json(body);
+// 			res.send(body)
+// 		}
+// 	);
+// });
+
+
+// app.get('', async (req, res) => {
+// 	const data = res.body.fields
+// 	console.log(data)
+  
+// 	// try {
+// 	//   const seedItems = await Product.create(newProducts)
+// 	//   res.send(seedItems)
+// 	// } catch (err) {
+// 	//   res.send(err.message)
+// 	// }
+// })
