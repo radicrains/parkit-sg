@@ -47,7 +47,7 @@ class App extends React.Component {
 	}
 
     fetchData = () => {
-        fetch('/carparkavailability')
+        fetch('https://parkit-sg.herokuapp.com/carparkavailability')
         .then((response) => {
             console.log(response);
             return response.json()
@@ -60,7 +60,7 @@ class App extends React.Component {
     }
 
     fetchOtherData = () => {
-        fetch('/carparkdetails?area=' + this.state.area)
+        fetch('https://parkit-sg.herokuapp.com/carparkdetails?area=' + this.state.area)
         .then((response) => {
             console.log(response);
             return response.json()
