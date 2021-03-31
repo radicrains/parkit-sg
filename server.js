@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
-// session dependency here
+const session = require('express-session');
 const mongoURI = process.env.DB_URI || 'mongodb://localhost:27017/carpark';
 const db = mongoose.connection;
 const request = require('request');
@@ -33,14 +33,24 @@ app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Methods', '*');
 	next();
 });
+app.use(
+	session({
+		secret: process.env.SECRET,
+		resave: false,
+		saveUninitialized: false,
+	})
+);
 
 /////////////// Controllers /////////////
 app.get('/', (req, res) => {
 	res.send('Hello World Carpark backend');
 });
 
-const tokenController = require('./controllers/token');
-app.use('/token', tokenController);
+const userController = require('./controllers/users');
+app.use('/users', userController);
+
+const sessionController = require('./controllers/sessions');
+app.use('/sessions', sessionController);
 
 const carparkController = require('./controllers/carpark');
 app.use('/carpark', carparkController);
@@ -48,23 +58,34 @@ app.use('/carpark', carparkController);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-app.get('/CarparkDetails', (req, res) => {
-	Carparks.find({address: { $regex: req.query.area, $options: 'i' }}, (err, foundCarpark) => {
-		if (err) console.log(err);
-		if (foundCarpark) {
-			// console.log(foundCarpark);
-			res.json(foundCarpark);
-		}
-	});
+app.get('/carparkdetails', (req, res) => {
+	let q = {}
+	if(req.query.area) {
+		q = {address: { $regex: req.query.area, $options: 'i' }}
+	}
+	if(req.session.currentUser) {
+		Carparks.find(q, (err, foundCarpark) => {
+			if (err) console.log(err);
+			if (foundCarpark) {
+				// console.log(foundCarpark);
+				res.json(foundCarpark);
+			}
+		});
+		console.log('there is existing session');
+	} else {
+		res.json('')
+		console.log('no session exist, please log in');
+		console.log(req.session)
+	}
 });
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-app.get('/CarparkAvailability', (req, res) => {
+app.get('/carparkavailability', (req, res) => {
 	request(
 		{
 			url:
-				'https://api.data.gov.sg/v1/transport/carpark-availability?date_time=' + moment().subtract(1, 'minutes').format('YYYY-MM-DDThh:mm:ss'),
+				'https://api.data.gov.sg/v1/transport/carpark-availability?date_time=' + moment().subtract(2, 'minutes').format('YYYY-MM-DDThh:mm:ss'),
 		},
 		(error, response, body) => {
 			if (error || response.statusCode !== 200) {
