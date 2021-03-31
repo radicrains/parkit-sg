@@ -47,7 +47,7 @@ class App extends React.Component {
 	}
 
     fetchData = () => {
-        fetch('/carparkavailability')
+        fetch('https://parkit-sg.herokuapp.com/carparkavailability')
         .then((response) => {
             console.log(response);
             return response.json()
@@ -60,7 +60,7 @@ class App extends React.Component {
     }
 
     fetchOtherData = () => {
-        fetch('/carparkdetails?area=' + this.state.area)
+        fetch('https://parkit-sg.herokuapp.com/carparkdetails?area=' + this.state.area)
         .then((response) => {
             console.log(response);
             return response.json()
@@ -81,7 +81,7 @@ class App extends React.Component {
         const loginUserData = new FormData(event.target);
         console.log(event.target)
         console.log(loginUserData.get('username'))
-        fetch('/sessions', {
+        fetch('https://parkit-sg.herokuapp.com/sessions', {
             body: JSON.stringify({
                 username: loginUserData.get('username'),
                 password: loginUserData.get('password')
@@ -109,7 +109,7 @@ class App extends React.Component {
         const createUserData = new FormData(event.target);
         console.log(event.target)
         console.log(createUserData.get('username'))
-        fetch('/users', {
+        fetch('https://parkit-sg.herokuapp.com/users', {
             body: JSON.stringify({
                 username: createUserData.get('username'),
                 password: createUserData.get('password')
