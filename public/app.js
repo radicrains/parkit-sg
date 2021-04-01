@@ -92,7 +92,10 @@ class App extends React.Component {
 				'Content-Type': 'application/json',
             },
         })
-            .then(loginUser => loginUser.json())
+            .then((loginUser) => {
+                console.log(loginUser);
+                return loginUser.json()
+            })
             .then((jsonedUser) => {
                 console.log(jsonedUser);
                 this.setState({userID: jsonedUser._id})
@@ -120,7 +123,10 @@ class App extends React.Component {
 				'Content-Type': 'application/json',
             },
         })
-            .then(createdUser => createdUser.json())
+            .then((createdUser)=> {
+                console.log(createdUser);
+                return createdUser.json()
+            })
             .then((jsonedUser) => {
                 console.log(jsonedUser);
             })
