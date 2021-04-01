@@ -13,5 +13,27 @@ comment.post('/', (req, res) => {
     });
 });
 
+//READ
+comment.get('/', (req, res) => {
+    Comment.find({}, (err, foundComment) => {
+        if (err) console.log(err.message);
+        if (foundComment) {
+            console.log(foundComment);
+            res.json(foundComment);
+        }
+    });
+});
+
+//UPDATE
+comment.put(':/id', (req, res) => {
+    Comment.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedComment) => {
+        if (err) console.log(err.message);
+        if (updatedComment) {
+            console.log(updatedComment);
+            res.json(updatedComment);
+        }
+    });
+});
+
 
 module.exports = comment;
