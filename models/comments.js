@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 
 ////create schema//////
 const commentsSchema = new mongoose.Schema({
-	user: String,
-    comment: String
+	car_park_no: String,
+    user: String,
+    comment: String,
+    
 });
 
 ////create model/////

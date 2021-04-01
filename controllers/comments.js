@@ -15,7 +15,7 @@ comment.post('/', (req, res) => {
 
 //READ
 comment.get('/', (req, res) => {
-    Comment.find({}, (err, foundComment) => {
+    Comments.find({}, (err, foundComment) => {
         if (err) console.log(err.message);
         if (foundComment) {
             console.log(foundComment);
@@ -25,8 +25,8 @@ comment.get('/', (req, res) => {
 });
 
 //UPDATE
-comment.put(':/id', (req, res) => {
-    Comment.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedComment) => {
+comment.put('/:id', (req, res) => {
+    Comments.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedComment) => {
         if (err) console.log(err.message);
         if (updatedComment) {
             console.log(updatedComment);
@@ -36,8 +36,8 @@ comment.put(':/id', (req, res) => {
 });
 
 //DELETE
-comment.delete(':/id', (req, res) => {
-    Comment.findByIdAndRemove(req.params.id, (err, deletedComment) => {
+comment.delete('/:id', (req, res) => {
+    Comments.findByIdAndRemove(req.params.id, (err, deletedComment) => {
         if (err) console.log(err);
 		if (deletedComment) {
 			console.log(deletedComment);
