@@ -130,7 +130,7 @@ class App extends React.Component {
     }
 
     handleLogout = () => {
-        fetch('/sessions', {
+        fetch('https://parkit-sg.herokuapp.com/sessions', {
             method: 'DELETE'
         })
         .then(response => response.json())
