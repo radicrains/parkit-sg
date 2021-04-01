@@ -35,5 +35,16 @@ comment.put(':/id', (req, res) => {
     });
 });
 
+//DELETE
+comment.delete(':/id', (req, res) => {
+    Comment.findByIdAndRemove(req.params.id, (err, deletedComment) => {
+        if (err) console.log(err);
+		if (deletedComment) {
+			console.log(deletedComment);
+			res.json(deletedComment);
+		}
+    });
+});
+
 
 module.exports = comment;
