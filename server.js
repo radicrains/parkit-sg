@@ -1,6 +1,7 @@
 /////////////// Dependencies /////////////
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
@@ -24,6 +25,7 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 app.use(express.urlencoded({ extended: false })); // extended: false - does not allow nested objects in query strings
 app.use(express.json()); // returns middleware that only parses JSON
 app.use(express.static('public'));
+app.use(cors());
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header(
@@ -59,10 +61,12 @@ app.use('/carpark', carparkController);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/carparkdetails', (req, res) => {
+	console.log('log req.session:', req.session.currentUser);
 	let q = {}
 	if(req.query.area) {
 		q = {address: { $regex: req.query.area, $options: 'i' }}
 	}
+	// req.session.currentUser = req.query.currentUser;
 	if(req.session.currentUser) {
 		Carparks.find(q, (err, foundCarpark) => {
 			if (err) console.log(err);
