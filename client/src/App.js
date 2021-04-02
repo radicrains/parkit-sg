@@ -75,7 +75,7 @@ class App extends React.Component {
             .then((jsonedUser) => {
                 console.log(jsonedUser);
                 this.setState({userID: jsonedUser._id})
-                this.fetchOtherData()
+                
             })
             .catch(error => console.log(error));
         event.target.reset();
@@ -114,6 +114,7 @@ class App extends React.Component {
         })
         .then(response => response.json())
             .then((jsonedResponse) => {
+                this.setState({userID: ''})
                 this.setState({fetchedArea: ''})
                 console.log(jsonedResponse);
             })
@@ -123,6 +124,12 @@ class App extends React.Component {
     componentDidMount() {
         this.fetchData()
         this.fetchOtherData()
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(this.state.userID !== prevState.userID) {
+            this.fetchOtherData()
+        }
     }
 
 
