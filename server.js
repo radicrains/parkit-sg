@@ -70,12 +70,10 @@ app.use('/carpark', carparkController);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/carparkdetails', (req, res) => {
-	console.log('log req.session:', req.session.currentUser);
 	let q = {}
 	if(req.query.area) {
 		q = {address: { $regex: req.query.area, $options: 'i' }}
 	}
-	// req.session.currentUser = req.query.currentUser;
 	if(req.session.currentUser) {
 		Carparks.find(q, (err, foundCarpark) => {
 			if (err) console.log(err);
