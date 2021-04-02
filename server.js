@@ -25,30 +25,21 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 app.use(express.urlencoded({ extended: false })); // extended: false - does not allow nested objects in query strings
 app.use(express.json()); // returns middleware that only parses JSON
 app.use(express.static('public'));
-app.use(cors({
-	origin: ['http://localhost:3000', 'http://localhost:3000/sessions', 'http://localhost:3000/carparkdetails'],
-	credentials: true
-}));
-// app.options('*', cors());
-// app.use((req, res, next) => {
-// 	res.header('Access-Control-Allow-Origin', '*');
-// 	res.header(
-// 		'Access-Control-Allow-Headers',
-// 		'Origin, X-Requested-With, Content-Type, Accept'
-// 	);
-// 	res.header('Access-Control-Allow-Methods', '*');
-// 	res.header('Access-Control-Allow-Credentials', 'true');
-// 	next();
-// });
-// app.set('trust proxy', 1);
+app.use(cors());
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header(
+		'Access-Control-Allow-Headers',
+		'Origin, X-Requested-With, Content-Type, Accept'
+	);
+	res.header('Access-Control-Allow-Methods', '*');
+	next();
+});
 app.use(
 	session({
 		secret: process.env.SECRET,
 		resave: false,
 		saveUninitialized: false,
-		cookie: {
-			secure: false
-		}
 	})
 );
 
@@ -70,10 +61,12 @@ app.use('/carpark', carparkController);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/carparkdetails', (req, res) => {
+	console.log('log req.session:', req.session.currentUser);
 	let q = {}
 	if(req.query.area) {
 		q = {address: { $regex: req.query.area, $options: 'i' }}
 	}
+	// req.session.currentUser = req.query.currentUser;
 	if(req.session.currentUser) {
 		Carparks.find(q, (err, foundCarpark) => {
 			if (err) console.log(err);
