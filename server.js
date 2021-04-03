@@ -58,6 +58,7 @@ const carparkController = require('./controllers/carpark');
 app.use('/carpark', carparkController);
 
 const commentController = require('./controllers/comments');
+const Comments = require('./models/comments');
 app.use('/comments', commentController);
 /////////////////////////////////////////////////////////////////
 
@@ -107,7 +108,24 @@ app.get('/carparkavailability', (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// app.get('/commentsarea')
+app.get('/commentsarea', (req, res) => {
+	if(req.query.area) {
+		q = {address: {$regex: req.query.area, $options: 'i'}}
+	}
+	if(req.session.currentUser) {
+		Carparks.find(q, (err, foundCarpark) => {
+			if (err) console.log(err);
+			if (foundCarpark) {
+				Comments.find()
+			}
+		});
+	}
+
+
+	// Comments.find (q, (err, foundComment) => {
+
+	// });
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
