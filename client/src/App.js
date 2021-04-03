@@ -1,6 +1,6 @@
 import React from 'react'
 import Display from './Display'
-import Map from './Map'
+// import Map from './Map'
 
 import './App.css';
 
@@ -167,9 +167,9 @@ class App extends React.Component {
                 </div>
                 : 'State has no value'
                 }
-                <div>
+                {/* <div>
                     <Map />
-                </div>
+                </div> */} 
             </React.Fragment>
 		);
 	}
