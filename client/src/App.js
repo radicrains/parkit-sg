@@ -3,6 +3,7 @@ import Display from './Display'
 import Map from './Map'
 
 import './App.css';
+import MarkerDetails from './MarkerDetails';
 
 const backendURL = '/'
 
@@ -17,7 +18,8 @@ class App extends React.Component {
             car_park_no: '',
             zoom: 0,
             lat: 0,
-            lng: 0
+            lng: 0,
+            markerDetails: ''
         };
 	}
 
@@ -171,6 +173,10 @@ class App extends React.Component {
         console.log(`lat: ${this.state.lat} lng: ${this.state.lng} zoom: ${this.state.zoom}`)
     }
 
+    handleMarkerDetails = (markerDetails) => {
+        this.setState({markerDetails})
+    }
+
 
 	render() {
         const { zoom, lat, lng } = this.state;
@@ -194,22 +200,25 @@ class App extends React.Component {
 
                 <button onClick={this.handleLogout}>Logout</button>
 
-                {this.state.fetchedArea ?
-                <div>
-                    Test
-                    <button onClick={this.fetchData}>DataFromGovAPI</button>
-                    <button onClick={this.fetchOtherData}>OtherDataFromMongoDB</button>
-                    <br></br>
-                    
-                    'Appear if state has value...'
-                    <Display car_park_no={this.state.car_park_no} area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
-                    
+                {
+                    this.state.fetchedArea ?
                     <div>
-                    <Map area={this.state.fetchedArea} lat={lat} lng={lng} zoom={zoom} onMapViewChange={this.handleMapViewChange} />
+                        Test
+                        <button onClick={this.fetchData}>DataFromGovAPI</button>
+                        <button onClick={this.fetchOtherData}>OtherDataFromMongoDB</button>
+                        <br></br>
+                        
+                        'Appear if state has value...'
+                        <Display car_park_no={this.state.car_park_no} area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
+                        
+                        <div>
+                            <Map onClickMarker={this.handleMarkerDetails} area={this.state.fetchedArea} lat={lat} lng={lng} zoom={zoom} onMapViewChange={this.handleMapViewChange} />
+                        </div>
+                        <div>
+                            <MarkerDetails markerDetails={this.state.markerDetails} detail={this.state.fetchedAvailability}/>
+                        </div>
                     </div>
-
-                </div>
-                : 'State has no value'
+                    : 'State has no value'
                 }
                 
             </React.Fragment>

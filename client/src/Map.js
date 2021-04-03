@@ -97,6 +97,12 @@ export default class Map extends React.Component {
           // })
 
           const marker = new H.map.Marker({lat:lat, lng:lng});
+          marker.setData(carpark);
+          marker.addEventListener('tap', (event) => {
+            console.log(event.target.getData());
+            const markerDetail = event.target.getData();
+            this.props.onClickMarker(markerDetail);
+          })
           return map.addObject(marker);
           
         }).catch(err => console.log(err));
@@ -110,11 +116,11 @@ export default class Map extends React.Component {
     
   }
 
-  // componentWillUnmount() {
-  //   if (this.map) {
-  //     this.map.removeEventListener('mapviewchange', this.handleMapViewChange);
-  //   }
-  // }
+  componentWillUnmount() {
+    if (this.map) {
+      this.map.removeEventListener('mapviewchange', this.handleMapViewChange);
+    }
+  }
 
   handleMapViewChange = (ev) => {
     const {
