@@ -4,6 +4,7 @@ import Map from './Map'
 
 import './App.css';
 import MarkerDetails from './MarkerDetails';
+import Searchbar from './Searchbar';
 
 const backendURL = '/'
 
@@ -16,9 +17,9 @@ class App extends React.Component {
             fetchedAvailability: '',
             userID:'',
             car_park_no: '',
-            zoom: 0,
-            lat: 0,
-            lng: 0,
+            // zoom: 0,
+            // lat: 0,
+            // lng: 0,
             markerDetails: ''
         };
 	}
@@ -76,8 +77,11 @@ class App extends React.Component {
 
     }
 
-    handleChange = (event) => {
-        this.setState({[event.target.id]: event.target.value})
+    handleSearch = (result) => {
+        this.setState({area: result}, () => {
+            console.log(this.state.area)
+        })
+        
     }
 
     handleLogin = (event) => {
@@ -158,20 +162,25 @@ class App extends React.Component {
         if(this.state.userID !== prevState.userID) {
             this.fetchOtherData()
         }
+
+        if(this.state.area !== prevState.area) {
+            this.fetchOtherData();
+
+        }
     }
 
-    handleMapViewChange = (zoom, lat, lng) => {
-        // this.setState({lat, lng, zoom})
+    // handleMapViewChange = (zoom, lat, lng) => {
+    //     // this.setState({lat, lng, zoom})
 
-        this.setState(() => {
-            return {
-                lat: lat,
-                lng: lng,
-                zoom: zoom
-            }
-        })
-        console.log(`lat: ${this.state.lat} lng: ${this.state.lng} zoom: ${this.state.zoom}`)
-    }
+    //     this.setState(() => {
+    //         return {
+    //             lat: lat,
+    //             lng: lng,
+    //             zoom: zoom
+    //         }
+    //     })
+    //     console.log(`lat: ${this.state.lat} lng: ${this.state.lng} zoom: ${this.state.zoom}`)
+    // }
 
     handleMarkerDetails = (markerDetails) => {
         this.setState({markerDetails})
@@ -179,7 +188,7 @@ class App extends React.Component {
 
 
 	render() {
-        const { zoom, lat, lng } = this.state;
+        
 		return (
             <React.Fragment>
                 <form onSubmit={this.handleCreateUser}>
@@ -212,15 +221,16 @@ class App extends React.Component {
                         <Display car_park_no={this.state.car_park_no} area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
                         
                         <div>
-                            <Map onClickMarker={this.handleMarkerDetails} area={this.state.fetchedArea} lat={lat} lng={lng} zoom={zoom} onMapViewChange={this.handleMapViewChange} />
+                            <Map onClickMarker={this.handleMarkerDetails} area={this.state.fetchedArea} />
                         </div>
+
                         <div>
                             <MarkerDetails markerDetails={this.state.markerDetails} detail={this.state.fetchedAvailability}/>
                         </div>
                     </div>
                     : 'State has no value'
                 }
-                
+                <Searchbar onSearch={this.handleSearch}/>
             </React.Fragment>
 		);
 	}

@@ -1,10 +1,15 @@
 import React from 'react'
+import CarparkSlots from './CarparkSlots'
 
 class MarkerDetails extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {
+                <CarparkSlots details={this.props.detail} carParkNo={this.props.markerDetails.car_park_no}/>
+
+
+
+                {/* {
                     this.props.detail.map((detail, index) => {
                         return (
                             detail.carpark_number === this.props.markerDetails.car_park_no ?
@@ -14,7 +19,7 @@ class MarkerDetails extends React.Component {
                             : ''
                         )
                     })  
-                }
+                } */}
                 <div>
                     <ul>
                         <li>{this.props.markerDetails.address}</li>
