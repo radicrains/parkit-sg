@@ -13,7 +13,8 @@ class App extends React.Component {
             area: 'redhill',
             fetchedArea: false,
             fetchedAvailability: '',
-            userID:''
+            userID:'',
+            fetchedComments: '',
         };
 	}
 
@@ -47,6 +48,26 @@ class App extends React.Component {
             console.log(this.state.fetchedArea);
             
         }).catch(err => console.log(err));
+        ///////////////////////////
+        fetch(`${backendURL}comments`, {
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+				'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+        .then((response) => {
+            console.log(response);
+            return response.json()
+        })
+        .then((fetchedComments) => {
+            
+            this.setState({fetchedComments: fetchedComments})
+            console.log(this.state.fetchedComments);
+            
+            
+        }).catch(err => console.log(err));
+
     }
 
     handleChange = (event) => {
@@ -163,7 +184,7 @@ class App extends React.Component {
                     <br></br>
                     
                     'Appear if state has value...'
-                    <Display area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
+                    <Display comments={this.state.fetchedComments} area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
                 </div>
                 : 'State has no value'
                 }
