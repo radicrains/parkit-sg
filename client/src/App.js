@@ -13,7 +13,11 @@ class App extends React.Component {
             area: 'redhill',
             fetchedArea: false,
             fetchedAvailability: '',
-            userID:''
+            userID:'',
+            car_park_no: '',
+            zoom: 0,
+            lat: 0,
+            lng: 0
         };
 	}
 
@@ -47,6 +51,27 @@ class App extends React.Component {
             console.log(this.state.fetchedArea);
             
         }).catch(err => console.log(err));
+        ///////////////////////////
+        fetch(`${backendURL}comments`, {
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+				'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+        .then((response) => {
+            console.log(response);
+            return response.json()
+        })
+        .then((fetchedComments) => {
+            
+            this.setState({car_park_no: fetchedComments})
+            console.log(this.state.car_park_no);
+            
+            
+        }).catch(err => console.log(err));
+
+
     }
 
     handleChange = (event) => {
@@ -97,15 +122,15 @@ class App extends React.Component {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain, */*',
-				        'Content-Type': 'application/json',
+				'Content-Type': 'application/json',
             },
-        })
+            })
             .then(createdUser => createdUser.json())
             .then((jsonedUser) => {
                 console.log(jsonedUser);
             })
             .catch(error => console.log(error));
-        event.target.reset();
+            event.target.reset();
 
     }
 
@@ -133,8 +158,22 @@ class App extends React.Component {
         }
     }
 
+    handleMapViewChange = (zoom, lat, lng) => {
+        // this.setState({lat, lng, zoom})
+
+        this.setState(() => {
+            return {
+                lat: lat,
+                lng: lng,
+                zoom: zoom
+            }
+        })
+        console.log(`lat: ${this.state.lat} lng: ${this.state.lng} zoom: ${this.state.zoom}`)
+    }
+
 
 	render() {
+        const { zoom, lat, lng } = this.state;
 		return (
             <React.Fragment>
                 <form onSubmit={this.handleCreateUser}>
@@ -163,13 +202,16 @@ class App extends React.Component {
                     <br></br>
                     
                     'Appear if state has value...'
-                    <Display area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
+                    <Display car_park_no={this.state.car_park_no} area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
+                    
+                    <div>
+                    <Map area={this.state.fetchedArea} lat={lat} lng={lng} zoom={zoom} onMapViewChange={this.handleMapViewChange} />
+                    </div>
+
                 </div>
                 : 'State has no value'
                 }
-                <div>
-                    <Map />
-                </div>
+                
             </React.Fragment>
 		);
 	}

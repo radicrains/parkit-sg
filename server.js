@@ -58,6 +58,7 @@ const carparkController = require('./controllers/carpark');
 app.use('/carpark', carparkController);
 
 const commentController = require('./controllers/comments');
+const { json } = require('express');
 app.use('/comments', commentController);
 /////////////////////////////////////////////////////////////////
 
@@ -105,7 +106,44 @@ app.get('/carparkavailability', (req, res) => {
 	)
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.get('/coordinate', (req, res) => {
+	const x = req.query.X;
+	const y =req.query.Y;
+	request(
+		{
+			url:
+				`https://developers.onemap.sg/commonapi/convert/3414to3857?X=${x}&Y=${y}`,
+		},
+		(error, response, body) => {
+			if (error || response.statusCode !== 200) {
+				console.log(error)
+			}
+			console.log(JSON.parse(body))
+			const convertedx = JSON.parse(body).X
+			const convertedy = JSON.parse(body).Y
+			console.log(`this is x: ${convertedx} and this is y: ${convertedy}`);
 
+			request(
+				{
+					url:
+						`https://developers.onemap.sg/commonapi/convert/3857to4326?X=${convertedx}&Y=${convertedy}`,
+				},
+				(error, response, body) => {
+					if (error || response.statusCode !== 200) {
+						console.log(error)
+					}
+					console.log(JSON.parse(body))
+					const lat = JSON.parse(body).latitude
+					const lng = JSON.parse(body).longitude
+					console.log(`this is lat: ${lat} and this is lng: ${lng}`);
+					res.send(body);
+				}
+			)
+			
+		}
+	)
+	
+})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // app.get('/commentsarea')
 
