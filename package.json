@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/calvansaw/GA-Carpark-Finder#readme",
   "dependencies": {
+    "@here/maps-api-for-javascript": "^1.24.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
