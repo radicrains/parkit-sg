@@ -10,7 +10,7 @@ class Markers extends React.Component {
 
                 console.log(`https://developers.onemap.sg/commonapi/convert/3414to3857?X=${carpark.x_coord}&Y=${carpark.y_coord}`);
 
-                fetch(`/coordinate?X=${carpark.x_coord}&Y=${carpark.y_coord}`, {
+                fetch(`https://calvan-carpark.herokuapp.com/coordinate?X=${carpark.x_coord}&Y=${carpark.y_coord}`, {
                     headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json',

@@ -6,7 +6,7 @@ import './App.css';
 import MarkerDetails from './MarkerDetails';
 import Searchbar from './Searchbar';
 
-const backendURL = '/'
+const backendURL = 'https://calvan-carpark.herokuapp.com/'
 
 class App extends React.Component {
 	constructor(props) {
@@ -44,6 +44,7 @@ class App extends React.Component {
 				'Content-Type': 'application/json',
             },
             method: 'GET',
+            credentials: 'include'
         })
         .then((response) => {
             console.log(response);
@@ -99,6 +100,7 @@ class App extends React.Component {
                 'Accept': 'application/json, text/plain, */*',
 				'Content-Type': 'application/json',
             },
+            credentials: 'include'
         })
             .then((loginUser) => {
               console.log(loginUser);
