@@ -1,7 +1,7 @@
 import React from 'react'
 import Display from './Display'
 import Map from './Map'
-
+import {Login,Register} from './components/index'
 import './App.css';
 
 const backendURL = '/'
@@ -138,19 +138,21 @@ class App extends React.Component {
 		return (
             <React.Fragment>
                 <form onSubmit={this.handleCreateUser}>
-                        <label htmlFor="create-username"></label>
+                    <Register register={this.props.register} />
+                        {/* <label htmlFor="create-username"></label>
                         <input type="text" id="create-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
                         <label htmlFor="create-password"></label>
                         <input type="password" id="create-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
-                        <input type="submit" value="Create User"></input>
+                        <input type="submit" value="Create User"></input> */}
                 </form>    
                     
                 <form onSubmit={this.handleLogin}>
-                        <label htmlFor="login-username"></label>
+                    <Login login={this.props.login} />
+                        {/* <label htmlFor="login-username"></label>
                         <input type="text" id="login-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
                         <label htmlFor="login-password"></label>
                         <input type="password" id="login-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
-                        <input type="submit" value="Login"></input>
+                        <input type="submit" value="Login"></input> */}
                 </form>
 
                 <button onClick={this.handleLogout}>Logout</button>
