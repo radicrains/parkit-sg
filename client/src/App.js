@@ -6,7 +6,7 @@ import './App.css';
 import MarkerDetails from './MarkerDetails';
 import Searchbar from './Searchbar';
 
-const backendURL = 'https://calvan-carpark.herokuapp.com/'
+const backendURL = '/'
 
 class App extends React.Component {
 	constructor(props) {
@@ -38,12 +38,7 @@ class App extends React.Component {
     }
 
     fetchOtherData = () => {
-        fetch(`${backendURL}carparkdetails?area=` + this.state.area + "&currentUser=" + this.state.userID, {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json',
-            },
-            method: 'GET',
+        fetch(`${backendURL}carparkdetails?area=` + this.state.area, {
             credentials: 'include'
         })
         .then((response) => {
