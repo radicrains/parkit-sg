@@ -1,180 +1,224 @@
-import React from 'react'
-import Display from './Display'
-import Map from './Map'
-import {Login,Register} from './components/index'
+import React from 'react';
+import Display from './Display';
+// import Map from './Map'
+import { Login, Register } from './components/index';
 import './App.css';
 
-const backendURL = '/'
+const backendURL = '/';
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-            area: 'redhill',
-            fetchedArea: false,
-            fetchedAvailability: '',
-            userID:''
-        };
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      area: 'redhill',
+      fetchedArea: false,
+      fetchedAvailability: '',
+      userID: '',
+      activeLogin: true,
+    };
+  }
 
-    fetchData = () => {
-        fetch(`${backendURL}carparkavailability`)
-        .then((response) => {
-            console.log(response);
-            return response.json()
-        })
-        .then((fetchedData) => {
-            this.setState({fetchedAvailability: fetchedData.items[0].carpark_data})
-            console.log(this.state.fetchedAvailability);
-            
-        }).catch(err => console.log(err));
+  fetchData = () => {
+    fetch(`${backendURL}carparkavailability`)
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((fetchedData) => {
+        this.setState({
+          fetchedAvailability: fetchedData.items[0].carpark_data,
+        });
+        console.log(this.state.fetchedAvailability);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  fetchOtherData = () => {
+    fetch(
+      `${backendURL}carparkdetails?area=` +
+        this.state.area +
+        '&currentUser=' +
+        this.state.userID,
+      {
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+        method: 'GET',
+      },
+    )
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((fetchedDetails) => {
+        this.setState({ fetchedArea: fetchedDetails });
+        console.log(this.state.fetchedArea);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  handleChange = (event) => {
+    this.setState({ [event.target.id]: event.target.value });
+  };
+
+  handleLogin = (event) => {
+    event.preventDefault();
+    const loginUserData = new FormData(event.target);
+    console.log(event.target);
+    console.log(loginUserData.get('username'));
+    fetch(`${backendURL}sessions`, {
+      body: JSON.stringify({
+        username: loginUserData.get('username'),
+        password: loginUserData.get('password'),
+      }),
+      method: 'POST',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((loginUser) => {
+        console.log(loginUser);
+        return loginUser.json();
+      })
+      .then((jsonedUser) => {
+        console.log(jsonedUser);
+        this.setState({ userID: jsonedUser._id });
+      })
+      .catch((error) => console.log(error));
+    event.target.reset();
+  };
+
+  handleCreateUser = (event) => {
+    event.preventDefault();
+    const createUserData = new FormData(event.target);
+    console.log(event.target);
+    console.log(createUserData.get('username'));
+    fetch(`${backendURL}users`, {
+      body: JSON.stringify({
+        username: createUserData.get('username'),
+        password: createUserData.get('password'),
+      }),
+      method: 'POST',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((createdUser) => createdUser.json())
+      .then((jsonedUser) => {
+        console.log(jsonedUser);
+      })
+      .catch((error) => console.log(error));
+    event.target.reset();
+  };
+
+  handleLogout = () => {
+    fetch(`${backendURL}sessions`, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((jsonedResponse) => {
+        this.setState({ userID: '' });
+        this.setState({ fetchedArea: '' });
+        console.log(jsonedResponse);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  componentDidMount() {
+    this.fetchData();
+    this.fetchOtherData();
+    this.rightSide.classList.add('right');
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.userID !== prevState.userID) {
+      this.fetchOtherData();
     }
+  }
 
-    fetchOtherData = () => {
-        fetch(`${backendURL}carparkdetails?area=` + this.state.area + "&currentUser=" + this.state.userID, {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json',
-            },
-            method: 'GET',
-        })
-        .then((response) => {
-            console.log(response);
-            return response.json()
-        })
-        .then((fetchedDetails) => {
-            this.setState({fetchedArea: fetchedDetails})
-            console.log(this.state.fetchedArea);
-            
-        }).catch(err => console.log(err));
+  changeState() {
+    const { activeLogin } = this.state;
+
+    if (activeLogin) {
+      this.rightSide.classList.remove('right');
+      this.rightSide.classList.add('left');
+    } else {
+      this.rightSide.classList.remove('left');
+      this.rightSide.classList.add('right');
     }
+    this.setState((prevState) => ({
+      activeLogin: !prevState.activeLogin,
+    }));
+  }
 
-    handleChange = (event) => {
-        this.setState({[event.target.id]: event.target.value})
-    }
-
-    handleLogin = (event) => {
-        event.preventDefault();
-        const loginUserData = new FormData(event.target);
-        console.log(event.target)
-        console.log(loginUserData.get('username'))
-        fetch(`${backendURL}sessions`, {
-            body: JSON.stringify({
-                username: loginUserData.get('username'),
-                password: loginUserData.get('password')
-            }),
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json',
-            },
-        })
-            .then((loginUser) => {
-              console.log(loginUser);
-              return loginUser.json()
-            })
-            .then((jsonedUser) => {
-                console.log(jsonedUser);
-                this.setState({userID: jsonedUser._id})
-                
-            })
-            .catch(error => console.log(error));
-        event.target.reset();
-
-
-    }
-
-    handleCreateUser = (event) => {
-        event.preventDefault();
-        const createUserData = new FormData(event.target);
-        console.log(event.target)
-        console.log(createUserData.get('username'))
-        fetch(`${backendURL}users`, {
-            body: JSON.stringify({
-                username: createUserData.get('username'),
-                password: createUserData.get('password')
-            }),
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-				        'Content-Type': 'application/json',
-            },
-        })
-            .then(createdUser => createdUser.json())
-            .then((jsonedUser) => {
-                console.log(jsonedUser);
-            })
-            .catch(error => console.log(error));
-        event.target.reset();
-
-    }
-
-    handleLogout = () => {
-        fetch(`${backendURL}sessions`, {
-            method: 'DELETE'
-        })
-        .then(response => response.json())
-            .then((jsonedResponse) => {
-                this.setState({userID: ''})
-                this.setState({fetchedArea: ''})
-                console.log(jsonedResponse);
-            })
-            .catch(error => console.log(error));
-    }
-
-    componentDidMount() {
-        this.fetchData()
-        this.fetchOtherData()
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if(this.state.userID !== prevState.userID) {
-            this.fetchOtherData()
-        }
-    }
-
-
-	render() {
-		return (
-            <React.Fragment>
+  render() {
+    const { activeLogin } = this.state;
+    const current = activeLogin ? 'Register' : 'Login';
+    const currentActive = activeLogin ? 'login' : 'register';
+    return (
+      <React.Fragment>
+        <div className='App'>
+          <div className='login'>
+            <div className='container' ref={(ref) => (this.container = ref)}>
+              {activeLogin && (
                 <form onSubmit={this.handleCreateUser}>
-                    <Register register={this.props.register} />
-                        {/* <label htmlFor="create-username"></label>
-                        <input type="text" id="create-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
-                        <label htmlFor="create-password"></label>
-                        <input type="password" id="create-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
-                        <input type="submit" value="Create User"></input> */}
-                </form>    
-                    
-                <form onSubmit={this.handleLogin}>
-                    <Login login={this.props.login} />
-                        {/* <label htmlFor="login-username"></label>
-                        <input type="text" id="login-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
-                        <label htmlFor="login-password"></label>
-                        <input type="password" id="login-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
-                        <input type="submit" value="Login"></input> */}
+                  <Register containerRef={(ref) => (this.current = ref)} />
                 </form>
+              )}
+              {!activeLogin && (
+                <form onSubmit={this.handleLogin}>
+                  <Login containerRef={(ref) => (this.current = ref)} />
+                </form>
+              )}
+            </div>
+            <RightSide
+              current={current}
+              currentActive={currentActive}
+              containerRef={(ref) => (this.rightSide = ref)}
+              onClick={this.changeState.bind(this)}
+            />
+          </div>
+        </div>
 
-                <button onClick={this.handleLogout}>Logout</button>
+        <button onClick={this.handleLogout} className='btn'>
+          Logout
+        </button>
 
-                {this.state.fetchedArea ?
-                <div>
-                    Test
-                    <button onClick={this.fetchData}>DataFromGovAPI</button>
-                    <button onClick={this.fetchOtherData}>OtherDataFromMongoDB</button>
-                    <br></br>
-                    
-                    'Appear if state has value...'
-                    <Display area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
-                </div>
-                : 'State has no value'
-                }
-                <div>
-                    <Map />
-                </div>
-            </React.Fragment>
-		);
-	}
+        {this.state.fetchedArea ? (
+          <div>
+            Test
+            <button onClick={this.fetchData} className='btn'>DataFromGovAPI</button>
+            <button onClick={this.fetchOtherData} className='btn'>OtherDataFromMongoDB</button>
+            <br></br>
+            'Appear if state has value...'
+            <Display
+              area={this.state.fetchedArea}
+              detail={this.state.fetchedAvailability}
+            />
+          </div>
+        ) : (
+          'State has no value'
+        )}
+        <div>{/* <Map /> */}</div>
+      </React.Fragment>
+    );
+  }
 }
+const RightSide = (props) => {
+  return (
+    <div
+      className='right-side'
+      ref={props.containerRef}
+      onClick={props.onClick}
+    >
+      <div className='inner-container'>
+        <div className='text'>{props.current}</div>
+      </div>
+    </div>
+  );
+};
 
 export default App;
