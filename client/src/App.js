@@ -10,7 +10,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-            area: 'redhill',
+            area: 'yishun',
             fetchedArea: false,
             fetchedAvailability: '',
             userID:'',
@@ -32,7 +32,8 @@ class App extends React.Component {
     }
 
     fetchOtherData = () => {
-        fetch(`${backendURL}carparkdetails?area=` + this.state.area + "&currentUser=" + this.state.userID, {
+        //FETCH CARPARKS DETAILS VIA URL
+        fetch(`${backendURL}carparkdetails?area=` + this.state.area, {
             headers: {
                 'Accept': 'application/json, text/plain, */*',
 				'Content-Type': 'application/json',
@@ -48,7 +49,8 @@ class App extends React.Component {
             console.log(this.state.fetchedArea);
             
         }).catch(err => console.log(err));
-        ///////////////////////////
+        
+        //FETCH COMMENTS
         fetch(`${backendURL}comments`, {
             headers: {
                 'Accept': 'application/json, text/plain, */*',
@@ -79,6 +81,7 @@ class App extends React.Component {
         const loginUserData = new FormData(event.target);
         console.log(event.target)
         console.log(loginUserData.get('username'))
+        
         fetch(`${backendURL}sessions`, {
             body: JSON.stringify({
                 username: loginUserData.get('username'),
