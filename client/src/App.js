@@ -190,14 +190,24 @@ class App extends React.Component {
         {this.state.fetchedArea ? (
           <div>
             Test
-            <button onClick={this.fetchData} className='btn'>DataFromGovAPI</button>
-            <button onClick={this.fetchOtherData} className='btn'>OtherDataFromMongoDB</button>
+            <button onClick={this.fetchData} className='btn'>
+              DataFromGovAPI
+            </button>
+            <button onClick={this.fetchOtherData} className='btn'>
+              OtherDataFromMongoDB
+            </button>
             <br></br>
-            'Appear if state has value...'
-            <Display
+            <div className='container'>
+              'Appear if state has value...'
+              <div>
+              <Display
               area={this.state.fetchedArea}
-              detail={this.state.fetchedAvailability}
-            />
+              detail={this.state.fetchedAvailability}/>
+
+              </div>
+              
+              </div>
+            
           </div>
         ) : (
           'State has no value'
