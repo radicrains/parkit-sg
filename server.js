@@ -11,6 +11,7 @@ const db = mongoose.connection;
 const request = require('request');
 const Carparks = require('./models/carparks')
 const moment = require('moment');
+const path = require('path');
 
 /////////////// Connect to mongoose /////////////
 mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
@@ -24,7 +25,8 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 /////////////// Middleware /////////////
 app.use(express.urlencoded({ extended: false })); // extended: false - does not allow nested objects in query strings
 app.use(express.json()); // returns middleware that only parses JSON
-app.use(express.static('public'));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.use(cors({
 	origin: ['https://calvan-carpark.herokuapp.com/', 'https://calvan-carpark.herokuapp.com/sessions', 'https://calvan-carpark.herokuapp.com/carparkdetails' ],
 	credentials: true
