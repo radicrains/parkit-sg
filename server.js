@@ -25,16 +25,19 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 app.use(express.urlencoded({ extended: false })); // extended: false - does not allow nested objects in query strings
 app.use(express.json()); // returns middleware that only parses JSON
 app.use(express.static('public'));
-app.use(cors());
-app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
-	);
-	res.header('Access-Control-Allow-Methods', '*');
-	next();
-});
+app.use(cors({
+	origin: ['https://calvan-carpark.herokuapp.com/', 'https://calvan-carpark.herokuapp.com/sessions', 'https://calvan-carpark.herokuapp.com/carparkdetails' ],
+	credentials: true
+}));
+// app.use((req, res, next) => {
+// 	res.header('Access-Control-Allow-Origin', '*');
+// 	res.header(
+// 		'Access-Control-Allow-Headers',
+// 		'Origin, X-Requested-With, Content-Type, Accept'
+// 	);
+// 	res.header('Access-Control-Allow-Methods', '*');
+// 	next();
+// });
 app.use(
 	session({
 		secret: process.env.SECRET,
@@ -58,6 +61,7 @@ const carparkController = require('./controllers/carpark');
 app.use('/carpark', carparkController);
 
 const commentController = require('./controllers/comments');
+const { json } = require('express');
 app.use('/comments', commentController);
 /////////////////////////////////////////////////////////////////
 
@@ -105,7 +109,44 @@ app.get('/carparkavailability', (req, res) => {
 	)
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// app.get('/coordinate', (req, res) => {
+// 	const x = req.query.X;
+// 	const y =req.query.Y;
+// 	request(
+// 		{
+// 			url:
+// 				`https://developers.onemap.sg/commonapi/convert/3414to3857?X=${x}&Y=${y}`,
+// 		},
+// 		(error, response, body) => {
+// 			if (error || response.statusCode !== 200) {
+// 				console.log(error)
+// 			}
+// 			console.log(JSON.parse(body))
+// 			const convertedx = JSON.parse(body).X
+// 			const convertedy = JSON.parse(body).Y
+// 			console.log(`this is x: ${convertedx} and this is y: ${convertedy}`);
 
+// 			request(
+// 				{
+// 					url:
+// 						`https://developers.onemap.sg/commonapi/convert/3857to4326?X=${convertedx}&Y=${convertedy}`,
+// 				},
+// 				(error, response, body) => {
+// 					if (error || response.statusCode !== 200) {
+// 						console.log(error)
+// 					}
+// 					console.log(JSON.parse(body))
+// 					const lat = JSON.parse(body).latitude
+// 					const lng = JSON.parse(body).longitude
+// 					console.log(`this is lat: ${lat} and this is lng: ${lng}`);
+// 					res.send(body);
+// 				}
+// 			)
+			
+// 		}
+// 	)
+	
+// })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // app.get('/commentsarea')
 
