@@ -6,7 +6,7 @@ class CarparkSlots extends React.Component {
             this.props.details.map((detail, index) => {
                 return (
                     detail.carpark_number === this.props.carParkNo ?
-                        <div key={detail.carpark_number}>
+                        <div key={index}>
                             There is {detail.carpark_info[0].lots_available} slot available for Lot Type: {detail.carpark_info[0].lot_type}
                         </div>
                     : ''

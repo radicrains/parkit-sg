@@ -3,10 +3,10 @@ import React from 'react'
 class Comments extends React.Component {
     render() {
         return (
-            this.props.car_park_no.map((comment, index) => {
+            this.props.comments.map((comment, index) => {
                 return (
-                    comment.car_park_no === this.props.carParkNo ?
-                        <div key={comment.car_park_no}>
+                    comment.car_park_no === this.props.markerDetails.car_park_no ?
+                        <div key={index}>
                             Comments: {comment.comment}
                         </div>
                     : ''

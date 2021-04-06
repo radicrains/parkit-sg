@@ -1,16 +1,18 @@
 /////////////// Dependencies /////////////
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors')
 const app = express();
 const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
+const path = require('path');
 const session = require('express-session');
 const mongoURI = process.env.DB_URI || 'mongodb://localhost:27017/carpark';
 const db = mongoose.connection;
 const request = require('request');
 const Carparks = require('./models/carparks')
 const moment = require('moment');
+require('dotenv').config();
+
 
 /////////////// Connect to mongoose /////////////
 mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
@@ -24,7 +26,8 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 /////////////// Middleware /////////////
 app.use(express.urlencoded({ extended: false })); // extended: false - does not allow nested objects in query strings
 app.use(express.json()); // returns middleware that only parses JSON
-app.use(express.static('public'));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.use(cors({
 	origin: ['https://calvan-carpark.herokuapp.com/', 'https://calvan-carpark.herokuapp.com/sessions', 'https://calvan-carpark.herokuapp.com/carparkdetails' ],
 	credentials: true
@@ -61,7 +64,7 @@ const carparkController = require('./controllers/carpark');
 app.use('/carpark', carparkController);
 
 const commentController = require('./controllers/comments');
-const { json } = require('express');
+const Comments = require('./models/comments');
 app.use('/comments', commentController);
 /////////////////////////////////////////////////////////////////
 
@@ -148,7 +151,24 @@ app.get('/carparkavailability', (req, res) => {
 	
 // })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// app.get('/commentsarea')
+app.get('/commentsarea', (req, res) => {
+	if(req.query.area) {
+		q = {address: {$regex: req.query.area, $options: 'i'}}
+	}
+	if(req.session.currentUser) {
+		Carparks.find(q, (err, foundCarpark) => {
+			if (err) console.log(err);
+			if (foundCarpark) {
+				Comments.find()
+			}
+		});
+	}
+
+
+	// Comments.find (q, (err, foundComment) => {
+
+	// });
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

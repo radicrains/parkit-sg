@@ -1,11 +1,13 @@
 import React from 'react'
 import CarparkSlots from './CarparkSlots'
+import Comments from './Comments'
 
 class MarkerDetails extends React.Component {
     render() {
         return (
             <React.Fragment>
                 <CarparkSlots details={this.props.detail} carParkNo={this.props.markerDetails.car_park_no}/>
+                <Comments comments={this.props.comments} markerDetails={this.props.markerDetails}/>
 
 
 
