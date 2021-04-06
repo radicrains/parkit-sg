@@ -1,6 +1,6 @@
 import React from 'react'
 import Display from './Display'
-// import Map from './Map'
+import Map from './Map'
 
 import './App.css';
 import MarkerDetails from './MarkerDetails';
@@ -49,28 +49,12 @@ class App extends React.Component {
         })
         .then((fetchedDetails) => {
             this.setState({fetchedArea: fetchedDetails})
+            // this.setState({car_park_no: fetchedDetails.car_park_no})
             console.log(this.state.fetchedArea);
             
         }).catch(err => console.log(err));
-        ///////////////////////////
-        fetch(`${backendURL}comments`, {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json',
-            },
-            method: 'GET',
-        })
-        .then((response) => {
-            console.log(response);
-            return response.json()
-        })
-        .then((fetchedComments) => {
-            
-            this.setState({car_park_no: fetchedComments})
-            console.log(this.state.car_park_no);
-            
-            
-        }).catch(err => console.log(err));
+        
+       
         
         //FETCH COMMENTS
         fetch(`${backendURL}comments`, {
@@ -86,7 +70,7 @@ class App extends React.Component {
         })
         .then((fetchedComments) => {
             
-            this.setState({fetchedComments: fetchedComments})
+            this.setState({fetchedComments: fetchedComments});
             console.log(this.state.fetchedComments);
             
             
@@ -179,14 +163,16 @@ class App extends React.Component {
     handleComment = (event) => {
         event.preventDefault();
         const createUserComment = new FormData(event.target);
+
         console.log(event.target);
         console.log(createUserComment);
         console.log(createUserComment.get('comment'));
+
         fetch(`${backendURL}comments`, {
             body: JSON.stringify({
-                // car_park_no: createUserComment.get(this.state.car_park_no), //<----- TO EDIT/INTEGRATE AFTER MAPS.HERE SETTLED
-                user: createUserComment.get(this.state.userName),
-                comments: createUserComment.get('comment')
+                car_park_no: createUserComment.get('carparkNo'),  
+                user: createUserComment.get('user'),
+                comment: createUserComment.get('comment')
             }),
             method: 'POST',
             headers: {
@@ -197,6 +183,8 @@ class App extends React.Component {
             .then(createdComment => createdComment.json())
             .then((jsonedComment) => {
                 console.log(jsonedComment);
+                this.setState({fetchedComments:[jsonedComment, ...this.state.fetchedComments]});
+                
             })
             .catch(error => console.log(error));
         event.target.reset();
@@ -224,6 +212,8 @@ class App extends React.Component {
 
     handleMarkerDetails = (markerDetails) => {
         this.setState({markerDetails})
+        this.setState({car_park_no: markerDetails.car_park_no})
+
     }
 
 
@@ -249,7 +239,8 @@ class App extends React.Component {
 
                 <form onSubmit={this.handleComment}>
                     <label htmlFor="user-comment"></label>
-                    <input type="hidden" id="login-user" name="user"></input>
+                    <input type="hidden" id="carparkNo" name="carparkNo" value={this.state.car_park_no}></input>
+                    <input type="hidden" id="login-user" name="user" value={this.state.userName}></input>
                     <input type="text" id="user-comment" name="comment" placeholder="Input your review here" onChange={this.handleChange}></input>
                     <input type="submit" value="Post-it!"></input>
                 </form>
@@ -265,14 +256,14 @@ class App extends React.Component {
                         <br></br>
                         
                         'Appear if state has value...'
-                        <Display car_park_no={this.state.car_park_no} area={this.state.fetchedArea} detail={this.state.fetchedAvailability} />
+                        {/* <Display comments={this.state.fetchedComments} area={this.state.fetchedArea} detail={this.state.fetchedAvailability} /> */}
                         
                         <div>
                             <Map onClickMarker={this.handleMarkerDetails} area={this.state.fetchedArea} />
                         </div>
 
                         <div>
-                            <MarkerDetails markerDetails={this.state.markerDetails} detail={this.state.fetchedAvailability}/>
+                            <MarkerDetails markerDetails={this.state.markerDetails} detail={this.state.fetchedAvailability} comments={this.state.fetchedComments}/>
                         </div>
                     </div>
                     : 'State has no value'
@@ -302,3 +293,24 @@ export default App;
     //     })
     //     console.log(`lat: ${this.state.lat} lng: ${this.state.lng} zoom: ${this.state.zoom}`)
     // }
+
+
+     // ///////////////////////////
+        // fetch(`${backendURL}comments`, {
+        //     headers: {
+        //         'Accept': 'application/json, text/plain, */*',
+		// 		'Content-Type': 'application/json',
+        //     },
+        //     method: 'GET',
+        // })
+        // .then((response) => {
+        //     console.log(response);
+        //     return response.json()
+        // })
+        // .then((fetchedComments) => {
+            
+        //     this.setState({car_park_no: fetchedComments})
+        //     console.log(this.state.car_park_no);
+            
+            
+        // }).catch(err => console.log(err));
