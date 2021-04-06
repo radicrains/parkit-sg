@@ -3,7 +3,7 @@ import React from 'react'
 class Comments extends React.Component {
     render() {
         return (
-            this.props.comments.map((comment, index) => {
+            this.props.car_park_no.map((comment, index) => {
                 return (
                     comment.car_park_no === this.props.carParkNo ?
                         <div key={comment.car_park_no}>
