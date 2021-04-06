@@ -220,18 +220,7 @@ class App extends React.Component {
         }
     }
 
-    // handleMapViewChange = (zoom, lat, lng) => {
-    //     // this.setState({lat, lng, zoom})
-
-    //     this.setState(() => {
-    //         return {
-    //             lat: lat,
-    //             lng: lng,
-    //             zoom: zoom
-    //         }
-    //     })
-    //     console.log(`lat: ${this.state.lat} lng: ${this.state.lng} zoom: ${this.state.zoom}`)
-    // }
+  
 
     handleMarkerDetails = (markerDetails) => {
         this.setState({markerDetails})
@@ -295,3 +284,21 @@ class App extends React.Component {
 }
 
 export default App;
+
+
+
+
+
+
+  // handleMapViewChange = (zoom, lat, lng) => {
+    //     // this.setState({lat, lng, zoom})
+
+    //     this.setState(() => {
+    //         return {
+    //             lat: lat,
+    //             lng: lng,
+    //             zoom: zoom
+    //         }
+    //     })
+    //     console.log(`lat: ${this.state.lat} lng: ${this.state.lng} zoom: ${this.state.zoom}`)
+    // }

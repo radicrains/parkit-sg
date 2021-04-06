@@ -3,30 +3,16 @@ import H from "@here/maps-api-for-javascript";
 import onResize from 'simple-element-resize-detector';
 import Markers from './Markers';
 
-// export default class Map extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     // the reference to the container
-//     this.ref = React.createRef();
-//     // reference to the map
-//     this.map = null;
-//   }
+export default class Map extends React.Component {
+  constructor(props) {
+    super(props);
+    // the reference to the container
+    this.ref = React.createRef();
+    // reference to the map
+    this.map = null;
+  }
 
-  // fetchHelper = async (url) => {
-  //   try {
-  //     const response = await fetch(url, {
-  //       headers: {
-  //           'Accept': 'application/json, text/plain, */*',
-  //           'Content-Type': 'application/json',
-  //       },
-  //       method: 'GET',
-  //     })
-  //     return response;
-  //   }
-  //   catch (err) {
-  //     console.log(err)
-  //   }
-  // }
+
 
   componentDidMount() {
     if (!this.map) {
@@ -67,7 +53,41 @@ import Markers from './Markers';
   //   }
   // }
 
-  // handleMapViewChange = (ev) => {
+  render() {
+    return (
+      <React.Fragment>
+        <div
+          style={{ width: '100%', height:'300px' }}
+          ref={this.ref}
+        />
+        <Markers onClickMarker={this.props.onClickMarker} area={this.props.area} map={this.map}/>
+      </React.Fragment>
+    )
+  }
+
+}
+
+
+
+////GRAVEYARD CODE////
+
+  // fetchHelper = async (url) => {
+  //   try {
+  //     const response = await fetch(url, {
+  //       headers: {
+  //           'Accept': 'application/json, text/plain, */*',
+  //           'Content-Type': 'application/json',
+  //       },
+  //       method: 'GET',
+  //     })
+  //     return response;
+  //   }
+  //   catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+
+   // handleMapViewChange = (ev) => {
   //   const {
   //     onMapViewChange
   //   } = this.props;
@@ -81,16 +101,3 @@ import Markers from './Markers';
   //     console.log('this ran...')
   //   }
   // }
-
-  render() {
-    return (
-      <React.Fragment>
-        <div
-          style={{ width: '100%', height:'300px' }}
-          ref={this.ref}
-        />
-        <Markers onClickMarker={this.props.onClickMarker} area={this.props.area} map={this.map}/>
-      </React.Fragment>
-    )
-  }
-}
