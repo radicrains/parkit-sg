@@ -1,17 +1,18 @@
 /////////////// Dependencies /////////////
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors')
 const app = express();
 const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
+const path = require('path');
 const session = require('express-session');
 const mongoURI = process.env.DB_URI || 'mongodb://localhost:27017/carpark';
 const db = mongoose.connection;
 const request = require('request');
 const Carparks = require('./models/carparks')
 const moment = require('moment');
-const path = require('path');
+require('dotenv').config();
+
 
 /////////////// Connect to mongoose /////////////
 mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
@@ -49,9 +50,9 @@ app.use(
 );
 
 /////////////// Controllers /////////////
-app.get('/', (req, res) => {
-	res.send('Hello World Carpark backend');
-});
+// app.get('/', (req, res) => {
+// 	res.send('Hello World Carpark backend');
+// });
 
 const userController = require('./controllers/users');
 app.use('/users', userController);
