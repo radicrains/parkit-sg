@@ -55,16 +55,11 @@ export default class Map extends React.Component {
       // add the interactive behaviour to the map
       new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
-      // handleMarker = (marker) => {
-      //   this.map.addObject(marker)
-      // }
       
 
     }
     
   }
-
-  
 
   // componentWillUnmount() {
   //   if (this.map) {
@@ -94,7 +89,7 @@ export default class Map extends React.Component {
           style={{ width: '100%', height:'300px' }}
           ref={this.ref}
         />
-        <Markers onClickMarker={this.props.onClickMarker} area={this.props.area} map={this.map} onGetMarker={this.handleMarker}/>
+        <Markers onClickMarker={this.props.onClickMarker} area={this.props.area} map={this.map}/>
       </React.Fragment>
     )
   }
