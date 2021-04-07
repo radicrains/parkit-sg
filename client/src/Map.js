@@ -108,7 +108,7 @@ export default class Map extends React.Component {
 
         this.map.setCenter({lat: this.state.lat, lng: this.state.lng});
         this.map.setZoom(17);
-      }, 6000)
+      }, 10000)
       // clearTimeout(timer);
       this.setState({mapArea: this.props.area})
       this.setState({addContainer: true})

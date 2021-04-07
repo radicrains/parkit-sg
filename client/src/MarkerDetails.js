@@ -7,7 +7,7 @@ class MarkerDetails extends React.Component {
         return (
             <React.Fragment>
                 <CarparkSlots details={this.props.detail} carParkNo={this.props.markerDetails.car_park_no}/>
-                <Comments comments={this.props.comments} markerDetails={this.props.markerDetails}/>
+                <Comments comments={this.props.comments} markerDetails={this.props.markerDetails} onUpdateComments={this.props.onUpdateComments} deleteComments={this.props.deleteComments} userName={this.props.userName}/>
 
 
 
