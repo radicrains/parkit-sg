@@ -15,7 +15,11 @@ class App extends React.Component {
       fetchedAvailability: '',
       userID: '',
       activeLogin: true,
+      show: true,
     };
+  }
+  deleteLogin = () => {
+    this.setState({show: false});
   }
 
   fetchData = () => {
@@ -156,8 +160,11 @@ class App extends React.Component {
 
   render() {
     const { activeLogin } = this.state;
-    const current = activeLogin ? 'Register' : 'Login';
+    const current = activeLogin ? 'Login' : 'Register';
     const currentActive = activeLogin ? 'login' : 'register';
+    let mylogin;
+    if (this.state.show) {
+      mylogin = <Login />;
     return (
       <React.Fragment>
         <div className='App'>
@@ -169,7 +176,7 @@ class App extends React.Component {
                 </form>
               )}
               {!activeLogin && (
-                <form onSubmit={this.handleLogin}>
+                <form onSubmit={this.handleLogin.deleteLogin} >
                   <Login containerRef={(ref) => (this.current = ref)} />
                 </form>
               )}
@@ -188,26 +195,27 @@ class App extends React.Component {
         </button>
 
         {this.state.fetchedArea ? (
-          <div>
-            Test
-            <button onClick={this.fetchData} className='btn'>
-              DataFromGovAPI
-            </button>
-            <button onClick={this.fetchOtherData} className='btn'>
-              OtherDataFromMongoDB
-            </button>
-            <br></br>
-            <div className='container'>
-              'Appear if state has value...'
-              <div>
-              <Display
-              area={this.state.fetchedArea}
-              detail={this.state.fetchedAvailability}/>
+          <div className='display'>
+            <div>
+              <h1>Test</h1>
+              <button onClick={this.fetchData} className='btn'>
+                DataFromGovAPI
+              </button>
+              <button onClick={this.fetchOtherData} className='btn'>
+                OtherDataFromMongoDB
+              </button>
+            </div>
 
+            <br></br>
+            <div className='display'>
+              <h1>'Appear if state has value...'</h1>
+              <div>
+                <Display
+                  area={this.state.fetchedArea}
+                  detail={this.state.fetchedAvailability}
+                />
               </div>
-              
-              </div>
-            
+            </div>
           </div>
         ) : (
           'State has no value'
