@@ -49,9 +49,9 @@ app.use(
 );
 
 /////////////// Controllers /////////////
-app.get('/', (req, res) => {
-	res.send('Hello World Carpark backend');
-});
+// app.get('/', (req, res) => {
+// 	res.send('Hello World Carpark backend');
+// });
 
 const userController = require('./controllers/users');
 app.use('/users', userController);
