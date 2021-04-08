@@ -1,7 +1,7 @@
 import React from 'react'
 import Display from './Display'
 import Map from './Map'
-
+import { Login, Register } from './loginCSS/index';
 import './App.css';
 import MarkerDetails from './MarkerDetails';
 import Searchbar from './Searchbar';
@@ -19,7 +19,8 @@ class App extends React.Component {
             userName:'',
             fetchedComments: '',
             car_park_no: '',
-            markerDetails: ''
+            markerDetails: '',
+            activeLogin: true,
         };
 	}
 
@@ -222,14 +223,16 @@ class App extends React.Component {
     /////////////////////////////////////////////////////////////////////////////////////
     //----------- LOAD THE DATAS ON START -----------//
     componentDidMount() {
-        this.fetchData()
-        this.fetchOtherData()
+        this.fetchData();
+        this.fetchOtherData();
+        // this.rightSide.classList.add('right');
     }
 
     //----------- LOAD CARPARK DETAILS IF THERE IS CHANGE IN AREA SEARCH OR USERS -----------//
     componentDidUpdate(prevProps, prevState) {
         if(this.state.userID !== prevState.userID) {
-            this.fetchOtherData()
+            this.fetchOtherData();
+            // this.rightSide.classList.add('right');
         }
 
         if(this.state.area !== prevState.area) {
@@ -248,36 +251,65 @@ class App extends React.Component {
 
 
 
+    changeState() {
+        const { activeLogin } = this.state;
+    
+        if (activeLogin) {
+          this.rightSide.classList.remove('right');
+          this.rightSide.classList.add('left');
+        } else {
+          this.rightSide.classList.remove('left');
+          this.rightSide.classList.add('right');
+        }
+        this.setState((prevState) => ({
+          activeLogin: !prevState.activeLogin,
+        }));
+      }
+
     /////////////////////////////////////////////////////////////////////////////////////
 	render() {
+        const { activeLogin } = this.state;
+        const current = activeLogin ? 'Login' : 'Register';
+        const currentActive = activeLogin ? 'login' : 'register';
+
 		return (
             <React.Fragment>
-                <div id='top-container'>
-                    <form onSubmit={this.handleCreateUser}>
-                        <label htmlFor="create-username"></label>
-                        <input type="text" id="create-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
-                        <label htmlFor="create-password"></label>
-                        <input type="password" id="create-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
-                        <input class='submit-btn' type="submit" value="Create User"></input>
-                    </form>    
+                {
+                    this.state.userID === '' ?
+                        <div id='top-container'>
+                            <div className='App'>
+                                <div className='login'>
+                                    <div className='container' ref={(ref) => (this.container = ref)}>
+                                        {activeLogin && (
+                                            <form onSubmit={this.handleCreateUser}>
+                                            <Register containerRef={(ref) => (this.current = ref)} />
+                                            </form>
+                                        )}
+                                        {!activeLogin && (
+                                            <form onSubmit={this.handleLogin}>
+                                            <Login containerRef={(ref) => (this.current = ref)} />
+                                            </form>
+                                        )}
+                                    </div>
 
-                    <form onSubmit={this.handleLogin}>
-                        <label htmlFor="login-username"></label>
-                        <input type="text" id="login-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
-                        <label htmlFor="login-password"></label>
-                        <input type="password" id="login-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
-                        <input class='submit-btn' type="submit" value="Login"></input>
-                    </form>
-
-                    
-
-                    <button class='submit-btn' onClick={this.handleLogout}>Logout</button>
-                </div>
+                                    <RightSide
+                                        current={current}
+                                        currentActive={currentActive}
+                                        containerRef={(ref) => (this.rightSide = ref)}
+                                        onClick={this.changeState.bind(this)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    : ''
+                }
                 
-
+                
+                
                 {
                     this.state.fetchedArea ?
-                    <div class='bottom-container'>                        
+                    <div id='bottom-container'>    
+                    <button onClick={this.handleLogout} className='btn'>Logout</button>                    
                         <div id='LHS'>
                             <Searchbar onSearch={this.handleSearch}/>
                             <div id='map'>
@@ -313,4 +345,42 @@ class App extends React.Component {
 	}
 }
 
+const RightSide = (props) => {
+    return (
+      <div
+        className='right-side'
+        ref={props.containerRef}
+        onClick={props.onClick}
+      >
+        <div className='inner-container'>
+          <div className='text'>{props.current}</div>
+        </div>
+      </div>
+    );
+};
+
 export default App;
+
+
+
+
+
+ {/* <form onSubmit={this.handleCreateUser}>
+                        <label htmlFor="create-username"></label>
+                        <input type="text" id="create-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
+                        <label htmlFor="create-password"></label>
+                        <input type="password" id="create-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
+                        <input class='submit-btn' type="submit" value="Create User"></input>
+                    </form>    
+
+                    <form onSubmit={this.handleLogin}>
+                        <label htmlFor="login-username"></label>
+                        <input type="text" id="login-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
+                        <label htmlFor="login-password"></label>
+                        <input type="password" id="login-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
+                        <input class='submit-btn' type="submit" value="Login"></input>
+                    </form>
+
+                    
+
+                    <button class='submit-btn' onClick={this.handleLogout}>Logout</button> */}
