@@ -10,23 +10,33 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-.container, #bottom-container{
-  display: flex;
+#main{
+  margin: auto 0;
+  padding-top: 1vmax;
+
 }
+
 #top-container{
   width: 100vw;
   height: 20vh;
 }
+
+#LHS-top, #RHS-top{
+  display: flex;
+  justify-content: space-between;
+}
+
 #bottom-container{
+  display: flex;
+  justify-content: center;
   width: 100vw;
   height: 80vh;
-  justify-content: center;
+  
 }
 #LHS, #RHS{
   width: 50vmax;
   padding: 1vmax;
-  justify-content: center;
-  align-items: center;
+  
 }
 #map{
   height: 90%;

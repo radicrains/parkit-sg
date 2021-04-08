@@ -1,5 +1,6 @@
 import React from 'react'
 import EditForm from './EditForm'
+import './App.css';
 
 class Comments extends React.Component {
 
@@ -29,7 +30,7 @@ class Comments extends React.Component {
                                     comment.user === this.props.userName ? 
                                         <div>
                                             <EditForm onUpdateComments={this.props.onUpdateComments} comment={comment} id={comment._id}/>
-                                            <button onClick={this.onDelete.bind(this, comment._id, index)}>Delete Comment</button>
+                                            <button className='btn' onClick={this.onDelete.bind(this, comment._id, index)}>Delete Comment</button>
                                         </div>
                                     : ''
                                 }

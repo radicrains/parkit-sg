@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
-// import './App.css';
+import './App.css';
 
 
 const EditForm = (props) => {
@@ -52,7 +52,7 @@ const EditForm = (props) => {
 
 	return (
 		<div>
-			<button onClick={onOpenModal}>Edit</button>
+			<button className='btn' onClick={onOpenModal}>Edit</button>
 			<Modal open={open} onClose={onCloseModal} center>
 				
 				<h4>Edit Your Comment</h4>

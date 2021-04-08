@@ -249,8 +249,6 @@ class App extends React.Component {
         this.setState({car_park_no: markerDetails.car_park_no})
     }
 
-
-
     changeState() {
         const { activeLogin } = this.state;
     
@@ -274,71 +272,85 @@ class App extends React.Component {
 
 		return (
             <React.Fragment>
-                {
-                    this.state.userID === '' ?
-                        <div id='top-container'>
-                            <div className='App'>
-                                <div className='login'>
-                                    <div className='container' ref={(ref) => (this.container = ref)}>
-                                        {activeLogin && (
-                                            <form onSubmit={this.handleCreateUser}>
-                                            <Register containerRef={(ref) => (this.current = ref)} />
-                                            </form>
-                                        )}
-                                        {!activeLogin && (
-                                            <form onSubmit={this.handleLogin}>
-                                            <Login containerRef={(ref) => (this.current = ref)} />
-                                            </form>
-                                        )}
-                                    </div>
+                <div id='main'>
+                    {
+                        this.state.userID === '' ?
+                            <div id='top-container'>
+                                <div className='App'>
+                                    <div className='login'>
+                                        <div className='container' ref={(ref) => (this.container = ref)}>
+                                            {activeLogin && (
+                                                <form onSubmit={this.handleCreateUser}>
+                                                <Register containerRef={(ref) => (this.current = ref)} />
+                                                </form>
+                                            )}
+                                            {!activeLogin && (
+                                                <form onSubmit={this.handleLogin}>
+                                                <Login containerRef={(ref) => (this.current = ref)} />
+                                                </form>
+                                            )}
+                                        </div>
 
-                                    <RightSide
-                                        current={current}
-                                        currentActive={currentActive}
-                                        containerRef={(ref) => (this.rightSide = ref)}
-                                        onClick={this.changeState.bind(this)}
+                                        <RightSide
+                                            current={current}
+                                            currentActive={currentActive}
+                                            containerRef={(ref) => (this.rightSide = ref)}
+                                            onClick={this.changeState.bind(this)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        : ''
+                    }
+                    
+                    {
+                        this.state.fetchedArea ?
+                        <div id='bottom-container'>    
+                            <div id='LHS'>
+                                <div id='LHS-top'>
+                                    <div>
+                                        <Searchbar onSearch={this.handleSearch}/>
+                                    </div>
+                                    <div>
+                                        <button onClick={this.handleLogout} className='btn'>Logout</button> 
+                                    </div>
+                                </div>
+                                <div id='map'>
+                                    <Map 
+                                        onClickMarker={this.handleMarkerDetails} 
+                                        area={this.state.fetchedArea} 
                                     />
                                 </div>
                             </div>
-                        </div>
-                    : ''
-                }
-                
-                
-                
-                {
-                    this.state.fetchedArea ?
-                    <div id='bottom-container'>    
-                    <button onClick={this.handleLogout} className='btn'>Logout</button>                    
-                        <div id='LHS'>
-                            <Searchbar onSearch={this.handleSearch}/>
-                            <div id='map'>
-                                <Map 
-                                    onClickMarker={this.handleMarkerDetails} 
-                                    area={this.state.fetchedArea} 
+                            <div id='RHS'>
+                                <form onSubmit={this.handleComment}>
+                                    <div id="RHS-top">
+                                        <div>
+                                            <input type="hidden" id="carparkNo" name="carparkNo" value={this.state.car_park_no}></input>
+                                            <input type="hidden" id="login-user" name="user" value={this.state.userName}></input>
+                                            <input type="text" id="user-comment" name="comment" placeholder="Input your review here" onChange={this.handleChange}></input>
+                                            <label htmlFor="user-comment"></label>
+                                        </div>
+                                        <div style={{ width: '50%'}}>
+                                            <input className='btn' type="submit" value="Post-it!"></input>
+                                        </div>
+                                    </div>
+                                    
+                                </form>
+                                <MarkerDetails 
+                                    markerDetails={this.state.markerDetails} 
+                                    detail={this.state.fetchedAvailability} 
+                                    comments={this.state.fetchedComments} 
+                                    onUpdateComments={this.updateComments} 
+                                    deleteComments={this.deleteComments}
+                                    userName={this.state.userName} 
                                 />
                             </div>
                         </div>
-                        <div id='RHS'>
-                            <form onSubmit={this.handleComment}>
-                                <label htmlFor="user-comment"></label>
-                                <input type="hidden" id="carparkNo" name="carparkNo" value={this.state.car_park_no}></input>
-                                <input type="hidden" id="login-user" name="user" value={this.state.userName}></input>
-                                <input type="text" id="user-comment" name="comment" placeholder="Input your review here" onChange={this.handleChange}></input>
-                                <input className='submit-btn' type="submit" value="Post-it!"></input>
-                            </form>
-                            <MarkerDetails 
-                                markerDetails={this.state.markerDetails} 
-                                detail={this.state.fetchedAvailability} 
-                                comments={this.state.fetchedComments} 
-                                onUpdateComments={this.updateComments} 
-                                deleteComments={this.deleteComments}
-                                userName={this.state.userName} 
-                            />
-                        </div>
-                    </div>
-                    : ''
-                }
+                        : ''
+                    }
+                </div>
+                
                 
             </React.Fragment>
 		);
@@ -360,27 +372,3 @@ const RightSide = (props) => {
 };
 
 export default App;
-
-
-
-
-
- {/* <form onSubmit={this.handleCreateUser}>
-                        <label htmlFor="create-username"></label>
-                        <input type="text" id="create-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
-                        <label htmlFor="create-password"></label>
-                        <input type="password" id="create-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
-                        <input class='submit-btn' type="submit" value="Create User"></input>
-                    </form>    
-
-                    <form onSubmit={this.handleLogin}>
-                        <label htmlFor="login-username"></label>
-                        <input type="text" id="login-username" name="username" placeholder="Input Username here" onChange={this.handleChange}></input>
-                        <label htmlFor="login-password"></label>
-                        <input type="password" id="login-password" name="password" placeholder="Enter Password here" onChange={this.handleChange}></input>
-                        <input class='submit-btn' type="submit" value="Login"></input>
-                    </form>
-
-                    
-
-                    <button class='submit-btn' onClick={this.handleLogout}>Logout</button> */}
