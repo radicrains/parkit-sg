@@ -15,11 +15,7 @@ class App extends React.Component {
       fetchedAvailability: '',
       userID: '',
       activeLogin: true,
-      show: true,
     };
-  }
-  deleteLogin = () => {
-    this.setState({show: false});
   }
 
   fetchData = () => {
@@ -162,9 +158,6 @@ class App extends React.Component {
     const { activeLogin } = this.state;
     const current = activeLogin ? 'Login' : 'Register';
     const currentActive = activeLogin ? 'login' : 'register';
-    let mylogin;
-    if (this.state.show) {
-      mylogin = <Login />;
     return (
       <React.Fragment>
         <div className='App'>
@@ -176,7 +169,7 @@ class App extends React.Component {
                 </form>
               )}
               {!activeLogin && (
-                <form onSubmit={this.handleLogin.deleteLogin} >
+                <form onSubmit={this.handleLogin}>
                   <Login containerRef={(ref) => (this.current = ref)} />
                 </form>
               )}
