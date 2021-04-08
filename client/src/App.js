@@ -3,6 +3,8 @@ import Display from './Display';
 // import Map from './Map'
 import { Login, Register } from './components/index';
 import './App.css';
+import MarkerDetails from './MarkerDetails';
+import Searchbar from './Searchbar';
 
 const backendURL = '/';
 
