@@ -6,38 +6,27 @@ class MarkerDetails extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <CarparkSlots details={this.props.detail} carParkNo={this.props.markerDetails.car_park_no}/>
-                <Comments comments={this.props.comments} markerDetails={this.props.markerDetails} onUpdateComments={this.props.onUpdateComments} deleteComments={this.props.deleteComments} userName={this.props.userName}/>
-
-
-
-                {/* {
-                    this.props.detail.map((detail, index) => {
-                        return (
-                            detail.carpark_number === this.props.markerDetails.car_park_no ?
-                                <div key={detail.carpark_number}>
-                                    There is {detail.carpark_info[0].lots_available} slot available for Lot Type: {detail.carpark_info[0].lot_type}
-                                </div>
-                            : ''
-                        )
-                    })  
-                } */}
-                <div>
+                <div id='cp-details'>
+                    <CarparkSlots details={this.props.detail} carParkNo={this.props.markerDetails.car_park_no}/>
                     <ul>
-                        <li>{this.props.markerDetails.address}</li>
-                        <li>{this.props.markerDetails.car_park_no}</li>
-                        <li>{this.props.markerDetails.short_term_parking}</li>
-                        <li>{this.props.markerDetails.car_park_type}</li>
-                        <li>{this.props.markerDetails.free_parking}</li>
-                        <li>{this.props.markerDetails.gantry_height}</li>
-                        <li>{this.props.markerDetails.car_park_basement}</li>
-                        <li>{this.props.markerDetails.night_parking}</li>
-                        <li>{this.props.markerDetails.car_park_decks}</li>
-                        <li>{this.props.markerDetails.type_of_parking_system}</li>
+                        <li>Carpark Address: {this.props.markerDetails.address}</li>
+                        <li>Short Term Parking: {this.props.markerDetails.short_term_parking}</li>
+                        <li>Carpark Type: {this.props.markerDetails.car_park_type}</li>
+                        <li>Free Parking Details: {this.props.markerDetails.free_parking}</li>
+                        <li>Overnight Parking: {this.props.markerDetails.night_parking}</li>
+                        <li>System: {this.props.markerDetails.type_of_parking_system}</li>
                     </ul>
                 </div>
+                <div id='cp-comments'>
+                    <Comments 
+                        comments={this.props.comments} 
+                        markerDetails={this.props.markerDetails} 
+                        onUpdateComments={this.props.onUpdateComments} 
+                        deleteComments={this.props.deleteComments} 
+                        userName={this.props.userName}
+                    />
+                </div>
             </React.Fragment>
-            
         )
     }
 }

@@ -6,7 +6,6 @@ import { Modal } from 'react-responsive-modal';
 
 const EditForm = (props) => {
 	const [open, setOpen] = useState(false);
-
 	const onOpenModal = () => setOpen(true);
 	const onCloseModal = () => setOpen(false);
 
@@ -29,7 +28,8 @@ const EditForm = (props) => {
                 console.log(jsonedComment)
                 props.onUpdateComments(jsonedComment);
             });
-        }).catch(err => console.log(err));
+        })
+		.catch(err => console.log(err));
 	};
 
     const [comment, setComment] = useState(props.comment);
@@ -41,25 +41,24 @@ const EditForm = (props) => {
             _id: props.comment._id,
             comment: comment,
         });
-        console.log(comment)
-      
+        // console.log(comment)
         // setComment('');
 	};
 
 	const handleChange = (event) => {
 		setComment(event.target.value);
-        console.log(comment)
+        // console.log(comment)
 	};
 
 	return (
 		<div>
-			<button onClick={onOpenModal}>Edit Comment</button>
+			<button onClick={onOpenModal}>Edit</button>
 			<Modal open={open} onClose={onCloseModal} center>
-				<h2>Edit Comment</h2>
 				
+				<h4>Edit Your Comment</h4>
 				<form onSubmit={handleSubmit}>
                     <label htmlFor="comment"></label>
-                    <input type="text" id="comment" value={comment} placeholder={props.comment.comment} onChange={handleChange}></input>
+                    <input type="text" id="comment" placeholder={props.comment.comment} onChange={handleChange}></input>
 		        </form>
 				
 			</Modal>
