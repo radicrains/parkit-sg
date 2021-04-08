@@ -325,7 +325,7 @@ class App extends React.Component {
                                 <input type="hidden" id="carparkNo" name="carparkNo" value={this.state.car_park_no}></input>
                                 <input type="hidden" id="login-user" name="user" value={this.state.userName}></input>
                                 <input type="text" id="user-comment" name="comment" placeholder="Input your review here" onChange={this.handleChange}></input>
-                                <input class='submit-btn' type="submit" value="Post-it!"></input>
+                                <input className='submit-btn' type="submit" value="Post-it!"></input>
                             </form>
                             <MarkerDetails 
                                 markerDetails={this.state.markerDetails} 
