@@ -115,7 +115,7 @@ class App extends React.Component {
             })
             .catch(error => console.log(error));
         event.target.reset();
-
+        this.fetchOtherData() 
 
     }
 
@@ -153,6 +153,7 @@ class App extends React.Component {
                 this.setState({userID: ''})
                 this.setState({userName: ''})
                 this.setState({fetchedArea: ''})
+                this.setState({markerDetails: ''})
                 console.log(jsonedResponse);
             })
             .catch(error => console.log(error));
@@ -190,6 +191,20 @@ class App extends React.Component {
         event.target.reset();
 
     }
+    updateComments = (comments) => {
+        this.setState({
+            fetchedComments: comments
+        });
+    }
+
+    deleteComments = (index) => {
+        this.setState({
+          fetchedComments: [
+            ...this.state.fetchedComments.slice(0, index),
+            ...this.state.fetchedComments.slice(index + 1)
+          ]
+        })
+      }
     /////////////////////////////////////////////////////////////////////////////////////
 
     componentDidMount() {
@@ -263,7 +278,14 @@ class App extends React.Component {
                         </div>
 
                         <div>
-                            <MarkerDetails markerDetails={this.state.markerDetails} detail={this.state.fetchedAvailability} comments={this.state.fetchedComments}/>
+                            <MarkerDetails 
+                                markerDetails={this.state.markerDetails} 
+                                detail={this.state.fetchedAvailability} 
+                                comments={this.state.fetchedComments} 
+                                onUpdateComments={this.updateComments} 
+                                deleteComments={this.deleteComments}
+                                userName={this.state.userName} 
+                            />
                         </div>
                     </div>
                     : 'State has no value'
