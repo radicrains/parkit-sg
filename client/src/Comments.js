@@ -23,7 +23,7 @@ class Comments extends React.Component {
                 return (
                     comment.car_park_no === this.props.markerDetails.car_park_no ?
                         <div id={index} key={index}>
-                            Comments: {comment.comment}
+                            {comment.user}: {comment.comment}
                             <div>
                                 {
                                     comment.user === this.props.userName ? 
