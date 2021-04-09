@@ -1,6 +1,6 @@
 import React from 'react';
 import Display from './Display';
-import Map from './Map';
+// import Map from './Map';
 import { Login, Register } from './loginCSS/index';
 import './App.css';
 import MarkerDetails from './MarkerDetails';
@@ -315,10 +315,10 @@ class App extends React.Component {
                                     </div>
                                 </div>
                                 <div id='map'>
-                                    <Map 
+                                    {/* <Map 
                                         onClickMarker={this.handleMarkerDetails} 
                                         area={this.state.fetchedArea} 
-                                    />
+                                    /> */}
                                 </div>
                             </div>
                             <div id='RHS'>
