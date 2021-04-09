@@ -1,12 +1,12 @@
-import React from 'react'
-import Display from './Display'
-import Map from './Map'
+import React from 'react';
+import Display from './Display';
+// import Map from './Map';
 import { Login, Register } from './loginCSS/index';
 import './App.css';
 import MarkerDetails from './MarkerDetails';
 import Searchbar from './Searchbar';
 
-const backendURL = '/'
+const backendURL = '/';
 
 class App extends React.Component {
 	constructor(props) {
@@ -210,15 +210,14 @@ class App extends React.Component {
     }
 
     deleteComments = (index) => {
-        this.setState({
-          fetchedComments: 
-          [
-            ...this.state.fetchedComments.slice(0, index),
-            ...this.state.fetchedComments.slice(index + 1)
-          ]
-        });
-    }
-
+      this.setState({
+        fetchedComments: 
+        [
+          ...this.state.fetchedComments.slice(0, index),
+          ...this.state.fetchedComments.slice(index + 1)
+        ]
+      });
+  }
 
     /////////////////////////////////////////////////////////////////////////////////////
     //----------- LOAD THE DATAS ON START -----------//
@@ -316,10 +315,10 @@ class App extends React.Component {
                                     </div>
                                 </div>
                                 <div id='map'>
-                                    <Map 
+                                    {/* <Map 
                                         onClickMarker={this.handleMarkerDetails} 
                                         area={this.state.fetchedArea} 
-                                    />
+                                    /> */}
                                 </div>
                             </div>
                             <div id='RHS'>
@@ -356,6 +355,7 @@ class App extends React.Component {
 		);
 	}
 }
+
 
 const RightSide = (props) => {
     return (
