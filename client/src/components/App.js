@@ -1,10 +1,9 @@
 import React from 'react'
 import Display from './Display'
-import Map from './Map'
-import { Login, Register } from './loginCSS/index';
-import './App.css';
-import MarkerDetails from './MarkerDetails';
-import Searchbar from './Searchbar';
+
+import { Login, Register } from './loginComponents/index';
+import '../styles/App.css';
+
 
 const backendURL = '/'
 
@@ -87,6 +86,32 @@ class App extends React.Component {
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////
+    //----------- HANDLE CREATE NEW USER -----------//
+    handleCreateUser = (event) => {
+        event.preventDefault();
+        const createUserData = new FormData(event.target);
+        // console.log(event.target)
+        // console.log(createUserData.get('username'))
+        fetch(`${backendURL}users`, {
+            body: JSON.stringify({
+                username: createUserData.get('username'),
+                password: createUserData.get('password')
+            }),
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+				'Content-Type': 'application/json',
+            },
+        })
+        .then(createdUser => createdUser.json())
+        .then((jsonedUser) => {
+            console.log(jsonedUser);
+        })
+        .catch(error => console.log(error));
+        event.target.reset();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
     //----------- HANDLE LOGIN, SET STATE FOR USER ID & USER NAME, FETCH CARPARK DETAILS -----------//
     handleLogin = (event) => {
         event.preventDefault();
@@ -121,34 +146,6 @@ class App extends React.Component {
         this.fetchOtherData() 
 
     }
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //----------- HANDLE CREATE NEW USER -----------//
-    handleCreateUser = (event) => {
-        event.preventDefault();
-        const createUserData = new FormData(event.target);
-        // console.log(event.target)
-        // console.log(createUserData.get('username'))
-        fetch(`${backendURL}users`, {
-            body: JSON.stringify({
-                username: createUserData.get('username'),
-                password: createUserData.get('password')
-            }),
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json',
-            },
-        })
-        .then(createdUser => createdUser.json())
-        .then((jsonedUser) => {
-            console.log(jsonedUser);
-        })
-        .catch(error => console.log(error));
-        event.target.reset();
-    }
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     //----------- HANDLE LOGOUT - END SESSION & RESET STATE -----------//
@@ -290,7 +287,6 @@ class App extends React.Component {
                                                 </form>
                                             )}
                                         </div>
-
                                         <RightSide
                                             current={current}
                                             currentActive={currentActive}
@@ -303,52 +299,29 @@ class App extends React.Component {
                         : ''
                     }
                     
-                    {
-                        this.state.fetchedArea ?
-                        <div id='app-container'>   
-                            <div id='LHS'>
-                                <div id='LHS-top'>
-                                    <div>
-                                        <Searchbar onSearch={this.handleSearch}/>
-                                    </div>
-                                    <div style={{padding:'0.5vmax'}}>
-                                        <button onClick={this.handleLogout} className='btn'>Logout</button> 
-                                    </div>
-                                </div>
-                                <div id='map'>
-                                    <Map 
-                                        onClickMarker={this.handleMarkerDetails} 
-                                        area={this.state.fetchedArea} 
-                                    />
-                                </div>
-                            </div>
-                            <div id='RHS'>
-                                <form onSubmit={this.handleComment}>
-                                    <div id="RHS-top">
-                                        <div>
-                                            <input type="hidden" id="carparkNo" name="carparkNo" value={this.state.car_park_no}></input>
-                                            <input type="hidden" id="login-user" name="user" value={this.state.userName}></input>
-                                            <input type="text" id="user-comment" name="comment" placeholder="Input your review of the carpark" onChange={this.handleChange}></input>
-                                            <label htmlFor="user-comment"></label>
-                                        </div>
-                                        <div>
-                                            <input type="submit" id='comment-btn'></input>
-                                        </div>
-                                    </div>
-                                    
-                                </form>
-                                <MarkerDetails 
-                                    markerDetails={this.state.markerDetails} 
-                                    detail={this.state.fetchedAvailability} 
-                                    comments={this.state.fetchedComments} 
-                                    onUpdateComments={this.updateComments} 
-                                    deleteComments={this.deleteComments}
-                                    userName={this.state.userName} 
-                                />
-                            </div>
-                        </div>
-                        : ''
-                    }
+                    <Display
+                        //user login functions & state
+                        handleLogout={this.handleLogout}
+                        userName={this.state.userName}
+
+                        //Searchbar functions & state
+                        handleSearch={this.handleSearch}
+
+                        //Maps functions & state
+                        fetchedAvailability={this.state.fetchedAvailability}
+                        fetchedArea={this.state.fetchedArea} 
+                        car_park_no={this.state.car_park_no}
+
+                        //MarkerDetails functions & state
+                        handleMarkerDetails={this.handleMarkerDetails} 
+                        markerDetails={this.state.markerDetails}
+
+                        //Comments functions & state
+                        fetchedComments={this.state.fetchedComments}
+                        updateComments={this.updateComments}
+                        deleteComments={this.deleteComments}
+                        handleComment={this.handleComment}
+                    />
                 </div>
                 
                 
@@ -357,6 +330,7 @@ class App extends React.Component {
 	}
 }
 
+//Hook function for login/register animation
 const RightSide = (props) => {
     return (
       <div

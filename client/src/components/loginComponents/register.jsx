@@ -1,10 +1,7 @@
 import React from 'react';
-import LeftCar from '../loginCSS/image/left_blue_car.png';
+import RightCar from './image/right_car.png';
 
-export class Login extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+export class Register extends React.Component {
 
   render() {
     return (
@@ -12,21 +9,22 @@ export class Login extends React.Component {
         <div className='header'></div>
         <div className='content'>
           <div className='image'>
-            <img src={LeftCar} />
+            <img src={RightCar} alt='red'/>
           </div>
           <div className='form'>
             <div className='form-group'>
-              <label htmlFor='login-username'>Username</label>
+              <label htmlFor='create-username'>Username</label>
               <input
                 type='text'
-                id='login-username'
+                id='create-username'
                 name='username'
                 placeholder='username'
                 onChange={this.handleChange}
               />
             </div>
+
             <div className='form-group'>
-              <label htmlFor='login-password'>Password</label>
+              <label htmlFor='create-password'>Password</label>
               <input
                 type='password'
                 id='login-password'
@@ -38,8 +36,8 @@ export class Login extends React.Component {
           </div>
         </div>
         <div className='footer'>
-          <button type='submit' className='btn' value='Login'>
-            Login
+          <button type='submit' className='btn' value='Create User'>
+            Register
           </button>
         </div>
       </div>

@@ -1,9 +1,8 @@
 import React from 'react'
 import EditForm from './EditForm'
-import './App.css';
+import '../styles/App.css';
 
 class Comments extends React.Component {
-
 
     onDelete = (id, index) => {
         fetch('/comments/' + id, {
@@ -32,25 +31,19 @@ class Comments extends React.Component {
                                     comment.user === this.props.userName ? 
                                         <div className='user-btn'>
                                             <div>
-                                            <EditForm onUpdateComments={this.props.onUpdateComments} comment={comment} id={comment._id}/>
+                                                <EditForm onUpdateComments={this.props.onUpdateComments} comment={comment} id={comment._id}/>
                                             </div>
                                             <div>
-                                            <button className='btn' id='deledit' onClick={this.onDelete.bind(this, comment._id, index)}>X</button>
+                                                <button className='btn' id='deledit' onClick={this.onDelete.bind(this, comment._id, index)}>X</button>
                                             </div>
-                                            
-                                            
-                                            
                                         </div>
                                     : ''
                                 }
                             </div>
-                            
                         </div>
                     : ''
-                
                 )
-            })  
-            
+            })   
         )
     }
 }
