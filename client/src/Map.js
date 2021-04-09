@@ -62,6 +62,7 @@ export default class Map extends React.Component {
             this.props.onClickMarker(markerDetail);
           })
           this.container.addObject(marker)
+          
           this.setState({lat: lat, lng: lng})
           console.log(this.state.lat);
           console.log(this.state.lng);
@@ -90,7 +91,7 @@ export default class Map extends React.Component {
 
     myPromise.then(() => {
       this.map.setCenter({lat: this.state.lat, lng: this.state.lng});
-      this.map.setZoom(17);
+      this.map.setZoom(16);
     })
     
   }
@@ -109,7 +110,7 @@ export default class Map extends React.Component {
       {
         pixelRatio: window.devicePixelRatio,
         center: {lat: 1.2851962650166864, lng: 103.81800888261792},
-        zoom: 10,
+        zoom: 11,
       },
     );
 

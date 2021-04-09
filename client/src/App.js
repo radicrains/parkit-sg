@@ -275,7 +275,7 @@ class App extends React.Component {
                 <div id='main'>
                     {
                         this.state.userID === '' ?
-                            <div id='top-container'>
+                            <div id='login-container'>
                                 <div className='App'>
                                     <div className='login'>
                                         <div className='container' ref={(ref) => (this.container = ref)}>
@@ -305,13 +305,13 @@ class App extends React.Component {
                     
                     {
                         this.state.fetchedArea ?
-                        <div id='bottom-container'>    
+                        <div id='app-container'>   
                             <div id='LHS'>
                                 <div id='LHS-top'>
                                     <div>
                                         <Searchbar onSearch={this.handleSearch}/>
                                     </div>
-                                    <div>
+                                    <div style={{padding:'0.5vmax'}}>
                                         <button onClick={this.handleLogout} className='btn'>Logout</button> 
                                     </div>
                                 </div>
@@ -328,11 +328,11 @@ class App extends React.Component {
                                         <div>
                                             <input type="hidden" id="carparkNo" name="carparkNo" value={this.state.car_park_no}></input>
                                             <input type="hidden" id="login-user" name="user" value={this.state.userName}></input>
-                                            <input type="text" id="user-comment" name="comment" placeholder="Input your review here" onChange={this.handleChange}></input>
+                                            <input type="text" id="user-comment" name="comment" placeholder="Input your review of the carpark" onChange={this.handleChange}></input>
                                             <label htmlFor="user-comment"></label>
                                         </div>
-                                        <div style={{ width: '50%'}}>
-                                            <input className='btn' type="submit" value="Post-it!"></input>
+                                        <div>
+                                            <input type="submit" id='comment-btn'></input>
                                         </div>
                                     </div>
                                     

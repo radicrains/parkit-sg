@@ -52,7 +52,7 @@ const EditForm = (props) => {
 
 	return (
 		<div>
-			<button className='btn' onClick={onOpenModal}>Edit</button>
+			<button className='btn' id='deledit' onClick={onOpenModal}>EDIT</button>
 			<Modal open={open} onClose={onCloseModal} center>
 				
 				<h4>Edit Your Comment</h4>

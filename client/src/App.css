@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Reggae+One&family=RocknRoll+One&display=swap');
+
 /* *{
   border: 1px solid gold
+
 } */
+
 
 .App {
   text-align: center;
@@ -10,38 +14,101 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-#main{
-  margin: auto 0;
-  padding-top: 1vmax;
-
+.user-btn{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 0.5vmax;
+  /* background-color: rgba(0, 0, 0, 0.527); */
 }
 
-#top-container{
+#deledit{
+  font-size: 60%;
+  color: rgb(190, 190, 190);
+  background-color: transparent;
+  padding:0 0.5vmax;
+}
+
+#main{
+  margin: auto 0;
+  padding-top: 3vmax;
+  /* font-family: 'Reggae One', cursive; */
+  font-family: 'RocknRoll One', sans-serif;
+}
+
+
+#login-container{
   width: 100vw;
   height: 20vh;
 }
 
 #LHS-top, #RHS-top{
   display: flex;
+  /* justify-content: flex-end; */
+  padding: 0 1vmax;
+}
+#LHS-top{
   justify-content: space-between;
 }
 
-#bottom-container{
+#LHS-top>div{
+  height: 3vmax;
+
+}
+
+
+#RHS-top>div{
+  height: 4vmax;
+}
+
+#cp-comments{
+  padding-top: 3vmax;
+  overflow:auto
+}
+
+#app-container{
   display: flex;
   justify-content: center;
   width: 100vw;
   height: 80vh;
   
 }
-#LHS, #RHS{
-  width: 50vmax;
+#LHS{
+  width: 70vmax;
+  padding: 1vmax;
+  
+}
+#RHS{
+  width: 30vmax;
   padding: 1vmax;
   
 }
 #map{
   height: 90%;
-  padding: 1vmax
+  padding: 0 1vmax;
 }
+
+#comment-btn{
+  visibility: hidden;
+}
+
+#cp-details>ul{
+  margin:0;
+}
+
+#cp-details>ul>li{
+  list-style-type: none;
+  padding: 0.2vmax;
+}
+
+#user{
+  color: blue
+}
+
+
+
+
+
 
 /* //////////////////////////////////////////////////////////// */
 

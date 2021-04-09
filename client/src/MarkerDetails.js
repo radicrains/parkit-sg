@@ -1,11 +1,13 @@
 import React from 'react'
 import CarparkSlots from './CarparkSlots'
 import Comments from './Comments'
+import './App.css';
 
 class MarkerDetails extends React.Component {
     render() {
         return (
             <React.Fragment>
+
                 <div id='cp-details'>
                     <CarparkSlots details={this.props.detail} carParkNo={this.props.markerDetails.car_park_no}/>
                     <ul>
@@ -26,6 +28,7 @@ class MarkerDetails extends React.Component {
                         userName={this.props.userName}
                     />
                 </div>
+
             </React.Fragment>
         )
     }

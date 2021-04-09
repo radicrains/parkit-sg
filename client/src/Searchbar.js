@@ -18,7 +18,7 @@ class Searchbar extends React.Component {
                 <div id='searchbar'>
                     <form onSubmit={this.handleSubmit}>
                         <label htmlFor="searchbar"></label>
-                        <input type="text" id="searchbar" name="search" placeholder="Search Here"></input>
+                        <input type="text" id="searchbar" name="search" placeholder="Search Street Name"></input>
                     </form>
                 </div>
             </React.Fragment>
