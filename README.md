@@ -11,17 +11,17 @@ https://parkit-sg.herokuapp.com/
 
 ## Technologies
 
-- #### Jsx
-- #### Method-override
-- #### Bycript
-- #### Express-session
-- #### Express
-- #### Mongoose
-- #### Nodemon
-- #### Path
-- #### Dotevn
-- #### Moments
-- #### Cors
+- Jsx
+- Method-override
+- Bycript
+- Express-session
+- Express
+- Mongoose
+- Nodemon
+- Path
+- Dotevn
+- Moments
+- Cors
 
 ## RESTful router
 
