@@ -1,7 +1,7 @@
 import React from 'react'
 import CarparkSlots from './CarparkSlots'
 import Comments from './Comments'
-import './App.css';
+import '../styles/App.css';
 
 class MarkerDetails extends React.Component {
     render() {

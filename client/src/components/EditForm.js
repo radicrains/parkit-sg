@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
-import './App.css';
+import '../styles/App.css';
 
 
 const EditForm = (props) => {
