@@ -463,19 +463,7 @@ class App extends React.Component {
 		);
 	}
 }
-const RightSide = (props) => {
-  return (
-    <div
-      className='right-side'
-      ref={props.containerRef}
-      onClick={props.onClick}
-    >
-      <div className='inner-container'>
-        <div className='text'>{props.current}</div>
-      </div>
-    </div>
-  );
-};
+
 
 const RightSide = (props) => {
     return (
