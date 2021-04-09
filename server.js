@@ -11,6 +11,7 @@ const db = mongoose.connection;
 const request = require('request');
 const Carparks = require('./models/carparks')
 const moment = require('moment');
+const path = require('path');
 
 /////////////// Connect to mongoose /////////////
 mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
@@ -24,17 +25,21 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 /////////////// Middleware /////////////
 app.use(express.urlencoded({ extended: false })); // extended: false - does not allow nested objects in query strings
 app.use(express.json()); // returns middleware that only parses JSON
-app.use(express.static('public'));
-app.use(cors());
-app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
-	);
-	res.header('Access-Control-Allow-Methods', '*');
-	next();
-});
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.use(cors({
+	origin: ['https://calvan-carpark.herokuapp.com/', 'https://calvan-carpark.herokuapp.com/sessions', 'https://calvan-carpark.herokuapp.com/carparkdetails' ],
+	credentials: true
+}));
+// app.use((req, res, next) => {
+// 	res.header('Access-Control-Allow-Origin', '*');
+// 	res.header(
+// 		'Access-Control-Allow-Headers',
+// 		'Origin, X-Requested-With, Content-Type, Accept'
+// 	);
+// 	res.header('Access-Control-Allow-Methods', '*');
+// 	next();
+// });
 app.use(
 	session({
 		secret: process.env.SECRET,
@@ -44,9 +49,9 @@ app.use(
 );
 
 /////////////// Controllers /////////////
-app.get('/', (req, res) => {
-	res.send('Hello World Carpark backend');
-});
+// app.get('/', (req, res) => {
+// 	res.send('Hello World Carpark backend');
+// });
 
 const userController = require('./controllers/users');
 app.use('/users', userController);
@@ -56,15 +61,21 @@ app.use('/sessions', sessionController);
 
 const carparkController = require('./controllers/carpark');
 app.use('/carpark', carparkController);
+
+const commentController = require('./controllers/comments');
+const Comments = require('./models/comments');
+app.use('/comments', commentController);
 /////////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/carparkdetails', (req, res) => {
+	console.log('log req.session:', req.session.currentUser);
 	let q = {}
 	if(req.query.area) {
 		q = {address: { $regex: req.query.area, $options: 'i' }}
 	}
+	// req.session.currentUser = req.query.currentUser;
 	if(req.session.currentUser) {
 		Carparks.find(q, (err, foundCarpark) => {
 			if (err) console.log(err);
@@ -99,6 +110,66 @@ app.get('/carparkavailability', (req, res) => {
 		}
 	)
 })
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// app.get('/coordinate', (req, res) => {
+// 	const x = req.query.X;
+// 	const y =req.query.Y;
+// 	request(
+// 		{
+// 			url:
+// 				`https://developers.onemap.sg/commonapi/convert/3414to3857?X=${x}&Y=${y}`,
+// 		},
+// 		(error, response, body) => {
+// 			if (error || response.statusCode !== 200) {
+// 				console.log(error)
+// 			}
+// 			console.log(JSON.parse(body))
+// 			const convertedx = JSON.parse(body).X
+// 			const convertedy = JSON.parse(body).Y
+// 			console.log(`this is x: ${convertedx} and this is y: ${convertedy}`);
+
+// 			request(
+// 				{
+// 					url:
+// 						`https://developers.onemap.sg/commonapi/convert/3857to4326?X=${convertedx}&Y=${convertedy}`,
+// 				},
+// 				(error, response, body) => {
+// 					if (error || response.statusCode !== 200) {
+// 						console.log(error)
+// 					}
+// 					console.log(JSON.parse(body))
+// 					const lat = JSON.parse(body).latitude
+// 					const lng = JSON.parse(body).longitude
+// 					console.log(`this is lat: ${lat} and this is lng: ${lng}`);
+// 					res.send(body);
+// 				}
+// 			)
+			
+// 		}
+// 	)
+	
+// })
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.get('/commentsarea', (req, res) => {
+	if(req.query.area) {
+		q = {address: {$regex: req.query.area, $options: 'i'}}
+	}
+	if(req.session.currentUser) {
+		Carparks.find(q, (err, foundCarpark) => {
+			if (err) console.log(err);
+			if (foundCarpark) {
+				Comments.find()
+			}
+		});
+	}
+
+
+	// Comments.find (q, (err, foundComment) => {
+
+	// });
+});
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
