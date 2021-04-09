@@ -5,7 +5,7 @@ import { Login, Register } from './loginComponents/index';
 import '../styles/App.css';
 
 
-const backendURL = '/'
+const backendURL = '/';
 
 class App extends React.Component {
 	constructor(props) {
@@ -207,15 +207,14 @@ class App extends React.Component {
     }
 
     deleteComments = (index) => {
-        this.setState({
-          fetchedComments: 
-          [
-            ...this.state.fetchedComments.slice(0, index),
-            ...this.state.fetchedComments.slice(index + 1)
-          ]
-        });
-    }
-
+      this.setState({
+        fetchedComments: 
+        [
+          ...this.state.fetchedComments.slice(0, index),
+          ...this.state.fetchedComments.slice(index + 1)
+        ]
+      });
+  }
 
     /////////////////////////////////////////////////////////////////////////////////////
     //----------- LOAD THE DATAS ON START -----------//
