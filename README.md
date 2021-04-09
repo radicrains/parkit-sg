@@ -44,6 +44,10 @@
 |         |           | / register | DELETE        | Logout form     |
 |         |           | / login    | DELETE        | Logout form     |
 
+## Data-flow relationship
+
+![](Wireframe/data_flow.png)
+
 ## Accomplishments
 
 - User need to register and login to the GA carpark finder app. When the user successful login to the carpark finder app. The carpark finder app will show the map and detail. user type the name of the carpark location by click search. The map will show the location and carpark detail with user comments. User can see the review by clicking the carpark location name. User can share their experience to the specific carpark and give the comment to the carpark. User also can edit his or her comment just click on edit button. how ever user can delete the comment if his or her post to wrong carpark. User is not able to edit or delete other user comments. User will logout after finish using the app.
