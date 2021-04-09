@@ -1,5 +1,5 @@
 import React from 'react';
-import LeftCar from '../components/image/left_blue_car.png';
+import LeftCar from './image/left_blue_car.png';
 
 export class Login extends React.Component {
   constructor(props) {

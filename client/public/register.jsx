@@ -1,5 +1,5 @@
 import React from 'react';
-import RightCar from '../components/image/right_car.png';
+import RightCar from './image/right_car.png';
 
 export class Register extends React.Component {
   constructor(props) {

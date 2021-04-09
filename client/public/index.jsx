@@ -1,4 +1,4 @@
 import './style.css';
 
-export { Login } from '../src/components/login';
-export { Register } from '../src/components/register';
+export { Login } from './login';
+export { Register } from './register';
