@@ -2,7 +2,9 @@
 
 ## Link
 
-https://parkit-sg.herokuapp.com/
+- App: https://parkit-sg.herokuapp.com/
+
+- Daily tracker: https://trello.com/b/xim7UBDY/parkit-sg
 
 ## Database/Storage
 
@@ -66,4 +68,7 @@ https://parkit-sg.herokuapp.com/
 - Users also can delete the comment by click on the "X" button.
   ![](Wireframe/delete_comments.png)
 
-## Additional Features were under Considerations
+## Additional Features that were under Considerations
+- separate front end repo with back end repo
+- include smart search
+- specify a box area that the map will automatically "zoom" to, so that it will show all the markers on the map.

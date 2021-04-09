@@ -270,6 +270,13 @@ class App extends React.Component {
             <React.Fragment>
                 <div id='main'>
                     {
+                        this.state.fetchedAvailability.length > 10 ?
+                        ''
+                        :
+                        <div style={{color:'grey'}}>fetching...</div>
+                        
+                    }
+                    {
                         this.state.userID === '' ?
                             <div id='login-container'>
                                 <div className='App'>
