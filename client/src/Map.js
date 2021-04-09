@@ -22,57 +22,77 @@ export default class Map extends React.Component {
   }
 
   getMarker = () =>  {
-    console.log(this.state.addContainer)
-    if(this.state.addContainer) {
-      this.container.removeObjects(this.container.getObjects())
-    }
-    this.props.area.map( async (carpark, index) => {
-      try {
-        const response = await fetch(`https://calvan-proxy.herokuapp.com/https://developers.onemap.sg/commonapi/convert/3414to3857?X=${carpark.x_coord}&Y=${carpark.y_coord}`, {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-            },
-            method: 'GET',
-        });
-
-        console.log(response);
-        const fetched3857 = await response.json();
-        console.log(fetched3857);
-        const convertedx = fetched3857.X;
-        const convertedy = fetched3857.Y;
-        const response_1 = await fetch(`https://calvan-proxy.herokuapp.com/https://developers.onemap.sg/commonapi/convert/3857to4326?X=${convertedx}&Y=${convertedy}`, {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-            },
-            method: 'GET',
-        });
-
-        console.log(response_1);
-        const coord = await response_1.json()
-        console.log(coord)
-        const lat = parseFloat(coord.latitude);
-        const lng = parseFloat(coord.longitude);
-        const marker = new H.map.Marker({lat:lat, lng:lng});
-        marker.setData(carpark);
-        marker.addEventListener('tap', (event) => {
-          console.log(event.target.getData());
-          const markerDetail = event.target.getData();
-          this.props.onClickMarker(markerDetail);
-        });
-
-        this.container.addObject(marker);
-        this.setState({lat: lat, lng: lng});
-        console.log(this.state.lat);
-        console.log(this.state.lng);
-      } catch (err) {
-        return console.log(err);
+    let myPromise = new Promise((myResolve, myReject) => {
+      console.log(this.state.addContainer)
+      if(this.state.addContainer) {
+        this.container.removeObjects(this.container.getObjects())
       }
+      let count = 0;
+      this.props.area.map( async (carpark, index) => {
+        try {
+          const response = await fetch(`https://calvan-proxy.herokuapp.com/https://developers.onemap.sg/commonapi/convert/3414to3857?X=${carpark.x_coord}&Y=${carpark.y_coord}`, {
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                },
+                method: 'GET',
+          });
+          console.log(response);
+          const fetched3857 = await response.json();
+          console.log(fetched3857);
+          const convertedx = fetched3857.X;
+          const convertedy = fetched3857.Y;
+          const response_1 = await fetch(`https://calvan-proxy.herokuapp.com/https://developers.onemap.sg/commonapi/convert/3857to4326?X=${convertedx}&Y=${convertedy}`, {
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                },
+                method: 'GET',
+          });
+          console.log(response_1);
+          const coord = await response_1.json()
+          console.log(coord)
+          const lat = parseFloat(coord.latitude)
+          const lng = parseFloat(coord.longitude)
+          const marker = new H.map.Marker({lat:lat, lng:lng});
+          marker.setData(carpark);
+          marker.addEventListener('tap', (event) => {
+            console.log(event.target.getData());
+            const markerDetail = event.target.getData();
+            this.props.onClickMarker(markerDetail);
+          })
+          this.container.addObject(marker)
+          this.setState({lat: lat, lng: lng})
+          console.log(this.state.lat);
+          console.log(this.state.lng);
+          
+          count++;
+
+        } catch (err) {
+          return console.log(err);
+        }
+
+        console.log(count)
+        if(count === this.props.area.length) {
+          console.log('count is equal to array length')
+          myResolve('proceed..')
+        }
+        
+      })
+      this.map.addObject(this.container)
+      
+      this.setState({mapArea: this.props.area})
+      this.setState({addContainer: true})
+      
+      
+      
     })
 
-    this.map.addObject(this.container)
-
+    myPromise.then(() => {
+      this.map.setCenter({lat: this.state.lat, lng: this.state.lng});
+      this.map.setZoom(17);
+    })
+    
   }
 
   componentDidMount() {
@@ -111,15 +131,8 @@ export default class Map extends React.Component {
       console.log('...updating')
       console.log(this.props.area)
       this.getMarker()
-      const timer = setTimeout(() => {
-
-        this.map.setCenter({lat: this.state.lat, lng: this.state.lng});
-        this.map.setZoom(17);
-      }, 6000)
-      // clearTimeout(timer);
-      this.setState({mapArea: this.props.area})
-      this.setState({addContainer: true})
     }
+    
   }
 
   render() {

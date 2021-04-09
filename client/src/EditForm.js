@@ -32,7 +32,7 @@ const EditForm = (props) => {
 		.catch(err => console.log(err));
 	};
 
-    const [comment, setComment] = useState(props.comment);
+    const [comment, setComment] = useState(props.comment.comment);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -52,13 +52,13 @@ const EditForm = (props) => {
 
 	return (
 		<div>
-			<button onClick={onOpenModal}>Edit</button>
+			<button className='btn' onClick={onOpenModal}>Edit</button>
 			<Modal open={open} onClose={onCloseModal} center>
 				
 				<h4>Edit Your Comment</h4>
 				<form onSubmit={handleSubmit}>
                     <label htmlFor="comment"></label>
-                    <input type="text" id="comment" placeholder={props.comment.comment} onChange={handleChange}></input>
+                    <input type="text" id="comment" value={comment} onChange={handleChange}></input>
 		        </form>
 				
 			</Modal>

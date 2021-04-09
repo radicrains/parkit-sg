@@ -1,3 +1,7 @@
+/* *{
+  border: 1px solid gold
+} */
+
 .App {
   text-align: center;
   display: flex;
@@ -6,25 +10,33 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+#main{
+  margin: auto 0;
+  padding-top: 1vmax;
+
 }
-.top-container{
+
+#top-container{
   width: 100vw;
   height: 20vh;
 }
-.bottom-container{
+
+#LHS-top, #RHS-top{
+  display: flex;
+  justify-content: space-between;
+}
+
+#bottom-container{
+  display: flex;
+  justify-content: center;
   width: 100vw;
   height: 80vh;
-  justify-content: center;
+  
 }
 #LHS, #RHS{
   width: 50vmax;
   padding: 1vmax;
-  justify-content: center;
-  align-items: center;
+  
 }
 #map{
   height: 90%;
