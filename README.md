@@ -62,8 +62,8 @@ https://parkit-sg.herokuapp.com/
 
 - After the user has give feedback about the car park location and the user can edit his or her comments.
   ![](Wireframe/edit_comment.png)
-  
+
 - Users also can delete the comment by click on the "X" button.
-  ![](Wireframe/delete_comment.png)
+  ![](Wireframe/delete_comments.png)
 
 ## Additional Features were under Considerations
