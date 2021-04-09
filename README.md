@@ -56,7 +56,7 @@ https://parkit-sg.herokuapp.com/
 
 - after login will show the main page of car park finder.
 
-![](Wireframe/seach_location.png)
+![](Wireframe/search_location.png)
 
 - The User can seach the parking location.
 
