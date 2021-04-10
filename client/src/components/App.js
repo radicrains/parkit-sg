@@ -137,9 +137,11 @@ class App extends React.Component {
             })
             .then((jsonedUser) => {
                 // console.log(jsonedUser);
-                this.setState({userID: jsonedUser._id})
-                this.setState({userName: jsonedUser.username})
-                
+                this.setState({
+                    userID: jsonedUser._id,
+                    userName: jsonedUser.username,
+                    area: 'redhill',
+                })
             })
             .catch(error => console.log(error));
         event.target.reset();
@@ -155,11 +157,13 @@ class App extends React.Component {
         })
         .then(response => response.json())
         .then((jsonedResponse) => {
-            this.setState({userID: ''});
-            this.setState({userName: ''});
-            this.setState({fetchedArea: ''});
-            this.setState({markerDetails: ''});
-            // console.log(jsonedResponse);
+            this.setState({
+                userID: '',
+                userName: '',
+                fetchedArea: '',
+                markerDetails: '',
+                area: '',
+            });
         })
         .catch(error => console.log(error));
     }
@@ -304,30 +308,33 @@ class App extends React.Component {
                             </div>
                         : ''
                     }
-                    
-                    <Display
-                        //user login functions & state
-                        handleLogout={this.handleLogout}
-                        userName={this.state.userName}
+                    {
+                        this.state.fetchedAvailability !== '' && this.state.userID !== '' ?
+                            <Display
+                                //user login functions & state
+                                handleLogout={this.handleLogout}
+                                userName={this.state.userName}
 
-                        //Searchbar functions & state
-                        handleSearch={this.handleSearch}
+                                //Searchbar functions & state
+                                handleSearch={this.handleSearch}
 
-                        //Maps functions & state
-                        fetchedAvailability={this.state.fetchedAvailability}
-                        fetchedArea={this.state.fetchedArea} 
-                        car_park_no={this.state.car_park_no}
+                                //Maps functions & state
+                                fetchedAvailability={this.state.fetchedAvailability}
+                                fetchedArea={this.state.fetchedArea} 
+                                car_park_no={this.state.car_park_no}
 
-                        //MarkerDetails functions & state
-                        handleMarkerDetails={this.handleMarkerDetails} 
-                        markerDetails={this.state.markerDetails}
+                                //MarkerDetails functions & state
+                                handleMarkerDetails={this.handleMarkerDetails} 
+                                markerDetails={this.state.markerDetails}
 
-                        //Comments functions & state
-                        fetchedComments={this.state.fetchedComments}
-                        updateComments={this.updateComments}
-                        deleteComments={this.deleteComments}
-                        handleComment={this.handleComment}
-                    />
+                                //Comments functions & state
+                                fetchedComments={this.state.fetchedComments}
+                                updateComments={this.updateComments}
+                                deleteComments={this.deleteComments}
+                                handleComment={this.handleComment}
+                            />
+                            : ''
+                    }
                 </div>
                 
                 

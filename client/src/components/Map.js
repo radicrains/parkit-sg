@@ -24,9 +24,13 @@ export default class Map extends React.Component {
   getMarker = () =>  {
     let myPromise = new Promise((myResolve, myReject) => {
       console.log(this.state.addContainer)
+
+      //check if there is marker in container via a state addContainer
       if(this.state.addContainer) {
         this.container.removeObjects(this.container.getObjects())
       }
+
+      //to increment count when marker is created
       let count = 0;
       this.props.area.map( async (carpark, index) => {
         try {
@@ -61,18 +65,22 @@ export default class Map extends React.Component {
             const markerDetail = event.target.getData();
             this.props.onClickMarker(markerDetail);
           })
+
+          //add marker to container group
           this.container.addObject(marker)
           
           this.setState({lat: lat, lng: lng})
           console.log(this.state.lat);
           console.log(this.state.lng);
           
+          //increment count
           count++;
 
         } catch (err) {
           return console.log(err);
         }
 
+        //condition to resolve promise (when count is equal to number of carparks stored in area state)
         console.log(count)
         if(count === this.props.area.length) {
           console.log('count is equal to array length')
@@ -80,15 +88,17 @@ export default class Map extends React.Component {
         }
         
       })
+      //add container group to map
       this.map.addObject(this.container)
       
-      this.setState({mapArea: this.props.area})
-      this.setState({addContainer: true})
-      
-      
-      
+      //change state for condition checking in componentDidUpdate
+      this.setState({
+        mapArea: this.props.area,
+        addContainer: true,
+      })
     })
 
+    //resolve promise - set map center and zoom on change of search area
     myPromise.then(() => {
       this.map.setCenter({lat: this.state.lat, lng: this.state.lng});
       this.map.setZoom(16);
@@ -128,6 +138,7 @@ export default class Map extends React.Component {
   }
 
   componentDidUpdate() {
+    //condition to check area save in state is same as props to prevent re-rendering of markers
     if(this.props.area !== this.state.mapArea) {
       console.log('...updating')
       console.log(this.props.area)
