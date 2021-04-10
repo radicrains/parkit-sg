@@ -76,3 +76,8 @@
 - separate front end repo with back end repo
 - include smart search
 - specify a box area that the map will automatically "zoom" to, so that it will show all the markers on the map.
+
+## Known bugs
+- The active session is not saved, upon refresh state will be gone. To prevent app from crashing, the login component will appear again for user to re-login.
+
+- For initial-login, users might encounter 503 services unavailable error.
