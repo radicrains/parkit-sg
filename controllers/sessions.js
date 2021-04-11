@@ -9,7 +9,10 @@ const User = require('../models/users');
 
 sessions.post('/', (req, res) => {
 	User.findOne({ username: req.body.username }, (err, foundUser) => {
-		console.log(req.body);
+		if (err) {
+            res.status(400).json({message: 'post not successful'})
+        };
+		
 		if (!foundUser) {
 			console.log('cannot find user', req.body.username);
 			// res.redirect('/sessions');
@@ -26,7 +29,9 @@ sessions.post('/', (req, res) => {
 
 sessions.delete('/', (req, res) => {
 	req.session.destroy((err) => {
-        if(err) console.log(err);
+        if (err) {
+            res.status(400).json({message: 'delete not successful'})
+        };
 		console.log('successful logout');
 		res.json('Destroyed session');
 	});

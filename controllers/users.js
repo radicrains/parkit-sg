@@ -12,7 +12,9 @@ users.post('/', (req, res) => {
 		bcrypt.genSaltSync(10)
 	);
 	User.create(req.body, (err, createdUsers) => {
-		if (err) console.log(err);
+		if (err) {
+            res.status(400).json({message: 'post not successful'})
+        };
 		if (createdUsers) {
 			console.log(createdUsers);
 			// res.json(createdUsers);
@@ -23,7 +25,9 @@ users.post('/', (req, res) => {
 ////// Read //////
 users.get('/', (req, res) => {
 	User.find({}, (err, foundUsers) => {
-		if (err) console.log(err);
+		if (err) {
+            res.status(400).json({message: 'get not successful'})
+        };
 		if (foundUsers) {
 			console.log(foundUsers);
 			res.json(foundUsers);
@@ -38,7 +42,9 @@ users.put('/:id', (req, res) => {
 		req.body,
 		{ new: true },
 		(err, updatedUsers) => {
-			if (err) console.log(err);
+			if (err) {
+            res.status(400).json({message: 'put not successful'})
+        };
 			if (updatedUsers) {
 				console.log(updatedUsers);
 				res.json(updatedUsers);
@@ -50,7 +56,9 @@ users.put('/:id', (req, res) => {
 ////// Delete //////
 users.delete('/:id', (req, res) => {
 	users.findByIdAndRemove(req.params.id, (err, deletedUsers) => {
-		if (err) console.log(err);
+		if (err) {
+            res.status(400).json({message: 'delete not successful'})
+        };
 		if (deletedUsers) {
 			console.log(deletedUsers);
 			res.json(deletedUsers);

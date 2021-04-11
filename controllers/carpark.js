@@ -7,7 +7,9 @@ const Carparks = require('../models/carparks');
 ////// Create //////
 carpark.post('/', (req, res) => {
 	Carparks.create(req.body, (err, createdCarpark) => {
-		if (err) console.log(err);
+		if (err) {
+            res.status(400).json({message: 'post not successful'})
+        };
 		if (createdCarpark) {
 			console.log(createdCarpark);
 			res.json(createdCarpark);
@@ -18,7 +20,9 @@ carpark.post('/', (req, res) => {
 ////// Read //////
 carpark.get('/', (req, res) => {
 	Carparks.find({}, (err, foundCarpark) => {
-		if (err) console.log(err);
+		if (err) {
+            res.status(400).json({message: 'get not successful'})
+        };
 		if (foundCarpark) {
 			console.log(foundCarpark);
 			res.json(foundCarpark);
@@ -33,7 +37,9 @@ carpark.put('/:id', (req, res) => {
 		req.body,
 		{ new: true },
 		(err, updatedCarpark) => {
-			if (err) console.log(err);
+			if (err) {
+            res.status(400).json({message: 'put not successful'})
+        };
 			if (updatedCarpark) {
 				console.log(updatedCarpark);
 				res.json(updatedCarpark);
@@ -45,7 +51,9 @@ carpark.put('/:id', (req, res) => {
 ////// Delete //////
 carpark.delete('/:id', (req, res) => {
 	Carparks.findByIdAndRemove(req.params.id, (err, deletedCarpark) => {
-		if (err) console.log(err);
+		if (err) {
+            res.status(400).json({message: 'delete not successful'})
+        };
 		if (deletedCarpark) {
 			console.log(deletedCarpark);
 			res.json(deletedCarpark);

@@ -5,7 +5,9 @@ const Comments = require('../models/comments');
 //CREATE
 comment.post('/', (req, res) => {
     Comments.create(req.body, (err, createdComments) => {
-        if (err) console.log(err.message);
+        if (err) {
+            res.status(400).json({message: 'post not successful'})
+        };
         if (createdComments) {
             console.log(createdComments);
             res.json(createdComments);
@@ -16,7 +18,9 @@ comment.post('/', (req, res) => {
 //READ
 comment.get('/', (req, res) => {
     Comments.find({}, (err, foundComment) => {
-        if (err) console.log(err.message);
+        if (err) {
+            res.status(400).json({message: 'get not successful'})
+        };
         if (foundComment) {
             console.log(foundComment);
             res.json(foundComment);
@@ -27,7 +31,9 @@ comment.get('/', (req, res) => {
 //UPDATE
 comment.put('/:id', (req, res) => {
     Comments.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedComment) => {
-        if (err) console.log(err.message);
+        if (err) {
+            res.status(400).json({message: 'put not successful'})
+        };
         if (updatedComment) {
             console.log(updatedComment);
             res.json(updatedComment);
@@ -38,7 +44,9 @@ comment.put('/:id', (req, res) => {
 //DELETE
 comment.delete('/:id', (req, res) => {
     Comments.findByIdAndRemove(req.params.id, (err, deletedComment) => {
-        if (err) console.log(err);
+        if (err) {
+            res.status(400).json({message: 'delete not successful'})
+        };
 		if (deletedComment) {
 			console.log(deletedComment);
 			res.json(deletedComment);

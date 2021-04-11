@@ -69,7 +69,10 @@ app.get('/carparkdetails', (req, res) => {
 	// req.session.currentUser = req.query.currentUser;
 	if(req.session.currentUser) {
 		Carparks.find(q, (err, foundCarpark) => {
-			if (err) console.log(err);
+			if (err) {
+				console.log(err)
+				res.status(400).json({message: 'get carpark details unsuccessful'})
+			};
 			if (foundCarpark) {
 				// console.log(foundCarpark);
 				res.json(foundCarpark);
