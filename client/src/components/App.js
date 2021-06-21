@@ -8,21 +8,18 @@ import '../styles/App.css';
 const backendURL = '/';
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-            area: 'redhill',
-            fetchedArea: false,
-            fetchedAvailability: '',
-            userID:'',
-            userName:'',
-            fetchedComments: '',
-            car_park_no: '',
-            markerDetails: '',
-            activeLogin: true,
-        };
-	}
-
+    state = {
+        area: 'redhill',
+        fetchedArea: false,
+        fetchedAvailability: '',
+        userID:'',
+        userName:'',
+        fetchedComments: '',
+        car_park_no: '',
+        markerDetails: '',
+        activeLogin: true,
+    };
+	
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     //----------- FETCH ALL CARPARK AVAILABILITY FROM DATA.GOV.SG -----------//
