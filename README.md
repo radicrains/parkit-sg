@@ -1,4 +1,5 @@
 # GA-Carpark-Finder
+This application allows users to search for real-time available carpark slots at a destination of your choice in Singapore
 
 ## Link
 
@@ -79,5 +80,4 @@
 
 ## Known bugs
 - The active session is not saved, upon refresh state will be gone. To prevent app from crashing, the login component will appear again for user to re-login.
-
 - For initial-login, users might encounter 503 services unavailable error.
